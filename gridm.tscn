@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://sl82y2poyu2p"]
+
+[node name="ReferenceRect" type="ReferenceRect"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+editor_only = false

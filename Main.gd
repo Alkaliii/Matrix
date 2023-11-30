@@ -1,0 +1,365 @@
+@tool
+extends Node
+
+@onready var copy_module = $Control/HBoxContainer/Preview/HBoxContainer/CopyModule
+@onready var cmb_scroll_container = $Control/HBoxContainer/Preview/HBoxContainer/CMBScrollContainer
+@onready var copy_module_b = $Control/HBoxContainer/Preview/HBoxContainer/CMBScrollContainer/CopyModuleB
+@onready var preview_grid = $Control/HBoxContainer/Preview/HBoxContainer/PreviewGrid
+@onready var uploaded_image = $Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage
+@onready var upload = $Control/HBoxContainer/Options/VBoxContainer/OptionsB/Upload
+@onready var regen = $Control/HBoxContainer/Options/VBoxContainer/OptionsB/Regen
+
+@export var image : Texture2D
+@export_range(1,99,1) var subdiv : int = 1 #past 16 you need to generate a scroll container list
+@export var interpolation : Image.Interpolation = Image.INTERPOLATE_BILINEAR #itp = itp.BILINEAR
+@export var size := Vector2(48,48)
+
+@export var vertical_offset : int = 0
+@export_range(0,1,0.01) var alpha_threshold = 0.3
+@export var prevent_repeat_color := false : set = prc_set
+@export var better_color := false : set = bc_set
+@export var with_transparency := false
+
+const gridm = preload("res://gridm.tscn")
+
+const icn_cornerA = preload("res://icons/rounded_corner_FILL0_wght400_GRAD0_opsz48.svg")
+const icn_cornerB = preload("res://icons/rounded_corner_FILL0_wght400_GRAD0_opsz48b.svg")
+const icn_cornerC = preload("res://icons/rounded_corner_FILL0_wght400_GRAD0_opsz48c.svg")
+const icn_cornerD = preload("res://icons/rounded_corner_FILL0_wght400_GRAD0_opsz48d.svg")
+const icn_top = preload("res://icons/border_top_FILL0_wght400_GRAD0_opsz48.svg")
+const icn_bottom = preload("res://icons/border_bottom_FILL0_wght400_GRAD0_opsz48.svg")
+const icn_left = preload("res://icons/border_left_FILL0_wght400_GRAD0_opsz48.svg")
+const icn_right = preload("res://icons/border_right_FILL0_wght400_GRAD0_opsz48.svg")
+const icn_inner = preload("res://icons/border_inner_FILL0_wght400_GRAD0_opsz48.svg")
+const icn_clear = preload("res://icons/border_clear_FILL0_wght400_GRAD0_opsz48.svg")
+const greeting = ["[wave]Hello!","[wave]Yellow!","[wave]Hi!","[shake]Heyyo!","[wave]Whats up!","[wave]Yo!","[tornado]Hmm..."]
+
+var cropped = false
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	if not Engine.is_editor_hint():
+		Gsb.preview_img.connect(preview)
+		Gsb.test.connect(test)
+		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Welcome.text = str(greeting.pick_random())
+		
+		get_viewport().set_embedding_subwindows(false)
+		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions.hide()
+		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Alpha_threshold.hide()
+		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Interpolation.hide()
+		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Vertical_Offset.hide()
+		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size.hide()
+		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Regen.hide()
+		$Control/HBoxContainer/Preview/ToggleOptions.hide()
+		uploaded_image.texture = preload("res://ram.png")
+#		grid.material.set_shader_parameter("size",Vector2(250,250))
+#		grid.material.set_shader_parameter("grid_size",floor(250.0/float(subdiv)))
+#		var lw = ceil(250.0/float(subdiv)) / 250.0
+#		print(lw)
+#		grid.material.set_shader_parameter("line_width",lw if subdiv > 16 else 0.1)
+	#create_dot_matrix()
+	pass # Replace with function body.
+
+func setgrid():
+	for m in $Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage/gridx.get_children():
+		m.queue_free()
+	for m in $Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage/gridy.get_children():
+		m.queue_free()
+	
+	for m in subdiv:
+		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage/gridx.add_child(gridm.instantiate())
+		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage/gridy.add_child(gridm.instantiate())
+		if m % 2 == 0:
+			await get_tree().process_frame
+		if m > 50: break
+
+func prc_set(value):
+	prevent_repeat_color = value
+	if value == false: better_color = false
+
+func bc_set(value):
+	better_color = value
+	if value == false: with_transparency = false
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+func test(s = null):
+	pass
+	#optimize(s)
+
+func preview(img : Image):
+	if Engine.is_editor_hint(): return
+	for i in preview_grid.get_children():
+		i.queue_free()
+	
+	var base = img.get_size()
+	for y in base.y:
+		for x in base.x:
+			var px = ColorRect.new()
+			px.color = img.get_pixel(x,y)
+			px.custom_minimum_size = Vector2(round(288/base.x),round(288/base.y))
+			preview_grid.add_child(px)
+
+func cut_image():
+	if Engine.is_editor_hint(): return
+	
+	for i in copy_module.get_children(): i.queue_free()
+	for i in copy_module_b.get_children(): i.queue_free()
+	
+	var cut = image.get_image()
+	var base = image.get_size()
+	var ratio = 1
+	if base.x != base.y:
+		var b = [base.x,base.y]
+		cut.crop(base[base.max_axis_index()],base[base.max_axis_index()])
+		cropped = true
+	else:
+		cropped = false
+	
+	cut.resize(size.x * subdiv,size.y * subdiv,interpolation)
+	
+	var cutup := []
+	for y in subdiv:
+		for x in subdiv:
+			cutup.append(cut.get_region(Rect2(Vector2(x * size.x,y * size.y),size)))
+	
+	print(cutup.size()," screens")
+	copy_module.columns = subdiv
+	var idx = 0
+	var wide = false if subdiv < 16 else true
+	copy_module.visible = !wide
+	cmb_scroll_container.visible = wide
+	for i in cutup:
+		var cs = copy_screen.new()
+		cs.wide = wide
+		cs.icon = get_icon(idx)
+		cs.data = create_dot_matrix_from_image(i)
+		cs.img_dat = i
+		if wide:
+			cs.text = str("Screen ",cutup.find(i) + 1)
+			copy_module_b.add_child(cs)
+		else:
+			copy_module.add_child(cs)
+		cs._check_data()
+		if cropped: cs._shrink_disabled()
+		idx += 1
+		if idx % 3 == 0:
+			await get_tree().process_frame
+	
+	await get_tree().process_frame
+	if wide:
+		for i in copy_module_b.get_children():
+			if !i is copy_screen: continue
+			if i.disabled == false:
+				i.copy()
+				break
+	else:
+		for i in copy_module.get_children():
+			if !i is copy_screen: continue
+			if i.disabled == false:
+				i.copy()
+				break
+	
+
+func get_icon(idx : int):
+	var duo = subdiv - 1
+	var tri = ((subdiv * subdiv) - subdiv)
+	var tetra = (subdiv * subdiv) - 1
+	var left = []
+	var right = [(subdiv * 2 - 1)]
+	for i in subdiv - 1:
+		if subdiv * i == 0: continue
+		left.append(subdiv * i)
+	for i in subdiv - 2:
+		right.append(right[right.size()-1] + subdiv)
+	
+	match idx:
+		0: #First Corner
+			return icn_cornerD
+		duo: #Second Corner
+			return icn_cornerA
+		tri: #Third Corner
+			return icn_cornerC
+		tetra:
+			return icn_cornerB
+	if idx in left: return icn_left
+	if idx in right: return icn_right
+	if idx > 0 and idx < duo: return icn_top
+	if idx > tri and idx < tetra: return icn_bottom
+	return icn_inner
+
+func create_dot_matrix_from_image(img : Image):
+	if Engine.is_editor_hint(): return
+	#img.resize(size.x,size.y,interpol)
+	var output : String = ""
+	if vertical_offset != 0:
+		output += str("<line-height=",vertical_offset * -1,">")
+		output += "\n"
+	output += "<align=center><line-height=16.75%><cspace=-0.11em>"
+	output += "\n"
+	
+	var prev_code = ""
+	var color_code = ""
+	
+	for y in size.y:
+		for x in size.x:
+			var px = img.get_pixel(x,y)
+			if better_color:
+				#generate whole ass color code
+				color_code = str("<#",px.to_html(true if with_transparency else false),">")
+			else:
+				#generate shortened color code
+				var shex = to_hexa([px.r8,px.g8,px.b8])
+				if (px.a < alpha_threshold):
+					#alpha cut
+					shex = "000"
+				color_code = str("<#",shex,">")
+			
+			#Add to output
+			if color_code.match(prev_code) and prevent_repeat_color:
+				output += "."
+			else:
+				output += str(color_code,".")
+				prev_code = color_code
+		if y != size.y: output += "\n"
+	
+	return output
+
+#func create_dot_matrix():
+#	var img = image.get_image()
+#	img.resize(size.x,size.y,interpolation)
+#	var output : String = ""
+#	if vertical_offset != 0:
+#		output += str("<line-height=",vertical_offset * -1,">")
+#		output += "\n"
+#	output += "<align=center><line-height=16.75%><cspace=-0.11em>"
+#	output += "\n"
+#
+#	for y in size.y:
+#		for x in size.x:
+#			var px = img.get_pixel(x,y)
+#			var rgb = [px.r8,px.g8,px.b8]
+#			var shex = to_hexa(rgb)
+#			if px.a > alpha_threshold: output += str("<#",shex,">.")
+#			else: output += str("<#000>.")
+#		if y != size.y: output += "\n"
+#
+#	DisplayServer.clipboard_set(output)
+#	print("copied to clipboard!")
+
+const hv = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"]
+func to_hexa(col):
+	col[0] = round(round(col[0] / 2.55) /17)
+	col[1] = round(round(col[1] / 2.55) /17)
+	col[2] = round(round(col[2] / 2.55) /17)
+	return str(hv[col[0]],hv[col[1]],hv[col[2]])
+
+#func optimize(txt : String):
+#	var code_idx = []
+#	#find all color codes
+#	for s in txt.count("<#"):
+#		if code_idx.is_empty(): code_idx.append(txt.find("<#"))
+#		else: code_idx.append(txt.find("<#",code_idx[code_idx.size()-1]+1))
+#	#remove dupes
+#	var prev_code = ""
+#	var new_code = ""
+#
+#	for c in code_idx:
+#		var LEN = -1
+#		if code_idx.size() > code_idx.find(c)+1:
+#			LEN = 6
+#		new_code = txt.substr(c,LEN).replace(".","")
+#		if prev_code.match(new_code):
+#			#previous == current \ kill duplicate
+#			for s in 6:
+#				txt[c + s] = "✦"
+#		else:
+#			print(prev_code)
+#			prev_code = new_code
+#
+#	#cleanup
+#	txt = txt.replace("✦","")
+#	await get_tree().create_timer(1).timeout
+#	DisplayServer.clipboard_set(txt)
+#	#print(txt)
+
+func hide_welcome():
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Welcome.hide()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Basic.hide()
+
+func _on_upload_pressed():
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Upload.release_focus()
+	hide_welcome()
+	
+	var fd = FileDialog.new()
+	fd.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	fd.access = FileDialog.ACCESS_FILESYSTEM
+	#fd.filters.append_array(PackedStringArray(["*.png","*.jpg","*.jpeg","*.svg","*.webp"]))
+	fd.add_filter("*.png","Image")
+	fd.add_filter("*.jpg","Image")
+	fd.add_filter("*.jpeg","Image")
+	fd.add_filter("*.svg","Image")
+	fd.add_filter("*.webp","Image")
+	fd.ok_button_text = "Upload"
+	fd.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_SCREEN_WITH_MOUSE_FOCUS
+	fd.size = Vector2(800,500)
+	fd.file_selected.connect(load_selected)
+	self.add_child(fd)
+	fd.popup()
+
+func show_options():
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions.show()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Alpha_threshold.show()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Interpolation.show()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Vertical_Offset.show()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size.show()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Regen.show()
+	$Control/HBoxContainer/Preview/ToggleOptions.show()
+
+func load_selected(path : String):
+	show_options()
+	print(path)
+	image = load(path)
+	uploaded_image.texture = image
+	generate()
+
+func _on_regen_pressed():
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Regen.release_focus()
+	generate()
+
+func generate():
+	subdiv = int(%in_Subdiv.value)
+	alpha_threshold = float(%in_Alpha.value)
+	interpolation = %in_Interpol.selected
+	vertical_offset = int(%in_Vertical.value)
+	size = Vector2(int(%in_size_x.text),int(%in_size_y.text))
+	
+	prevent_repeat_color = %in_optimize.button_pressed
+	better_color = %in_color.button_pressed
+	with_transparency = %in_transparency.button_pressed
+	
+	setgrid()
+	cut_image()
+
+const ramA = preload("res://ram.png")
+const ramB = preload("res://Ram_Infobox.png")
+func _on_ea_pressed():
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples.hide()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/ea.release_focus()
+	hide_welcome()
+	show_options()
+	image = ramA
+	uploaded_image.texture = image
+	generate()
+
+
+func _on_eb_pressed():
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples.hide()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/eb.release_focus()
+	hide_welcome()
+	show_options()
+	image = ramB
+	uploaded_image.texture = image
+	generate()

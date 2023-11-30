@@ -1,0 +1,123 @@
+[gd_scene load_steps=4 format=3 uid="uid://dri28h4d4os0w"]
+
+[ext_resource type="FontFile" uid="uid://csyjnpwhaob4v" path="res://upheavtt.ttf" id="1_1kuye"]
+[ext_resource type="FontFile" uid="uid://bydssj3oqdgqp" path="res://VCR_OSD_MONO_1.001.ttf" id="2_hi87d"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_meotu"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0.145098, 0.145098, 0.145098, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[node name="infoscreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1280, 360)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+color = Color(0.145098, 0.145098, 0.145098, 0.2)
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_meotu")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 0.752941, 0.796078, 1)
+theme_override_fonts/normal_font = ExtResource("1_1kuye")
+theme_override_font_sizes/normal_font_size = 45
+bbcode_enabled = true
+text = "MATRIX"
+fit_content = true
+scroll_active = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_hi87d")
+theme_override_fonts/bold_font = ExtResource("2_hi87d")
+theme_override_fonts/italics_font = ExtResource("2_hi87d")
+theme_override_font_sizes/normal_font_size = 15
+theme_override_font_sizes/bold_font_size = 20
+bbcode_enabled = true
+text = "Upload an image, then click on the buttons in the preview area to copy sections to your clipboard.
+
+"
+fit_content = true
+scroll_active = false
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_hi87d")
+theme_override_fonts/bold_font = ExtResource("2_hi87d")
+theme_override_fonts/italics_font = ExtResource("2_hi87d")
+theme_override_font_sizes/normal_font_size = 15
+theme_override_font_sizes/bold_font_size = 20
+bbcode_enabled = true
+text = "+ Use Subdivisions to set how many screens the image should be cut across.
+
+"
+fit_content = true
+scroll_active = false
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("1_1kuye")
+text = "Subdivsions"
+
+[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("1_1kuye")
+text = "Alpha ThreSHOLD"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.396078, 0.396078, 0.396078, 1)
+theme_override_fonts/normal_font = ExtResource("1_1kuye")
+bbcode_enabled = true
+text = "By Ali"
+fit_content = true
+scroll_active = false

@@ -1,0 +1,601 @@
+[gd_scene load_steps=23 format=3 uid="uid://bfr6scil1p0vt"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_jnf3j"]
+[ext_resource type="Texture2D" uid="uid://s6odp8qwiaup" path="res://Ram_Infobox.png" id="2_a48b2"]
+[ext_resource type="Texture2D" uid="uid://1yvjjvco51nd" path="res://back2.jpg" id="3_s3wkp"]
+[ext_resource type="FontFile" uid="uid://bydssj3oqdgqp" path="res://VCR_OSD_MONO_1.001.ttf" id="4_4a2qu"]
+[ext_resource type="Script" path="res://ManageInput.gd" id="5_vqtll"]
+[ext_resource type="Texture2D" uid="uid://c6dsp43xjpn58" path="res://icons/3059-cautionwarning.png" id="6_g7j7u"]
+[ext_resource type="Texture2D" uid="uid://dyywdgbq2dcf8" path="res://icons/options/grid_3x3_FILL0_wght400_GRAD0_opsz48.svg" id="6_lditq"]
+[ext_resource type="Texture2D" uid="uid://c001epwx7e55o" path="res://icons/warning_FILL0_wght400_GRAD0_opsz48.svg" id="7_lgkxk"]
+[ext_resource type="Texture2D" uid="uid://1tb7ui1o771b" path="res://icons/warning_FILL0_wght400_GRAD0_opsz48b.svg" id="7_s74l8"]
+[ext_resource type="Texture2D" uid="uid://1dn5062clnlq" path="res://icons/options/content_cut_FILL0_wght400_GRAD0_opsz48.svg" id="8_sitfy"]
+[ext_resource type="Texture2D" uid="uid://cfyyqvfm1xvwm" path="res://icons/options/masked_transitions_FILL0_wght400_GRAD0_opsz48.svg" id="9_3h2di"]
+[ext_resource type="Texture2D" uid="uid://dxd3l8q8b4fcp" path="res://icons/options/text_select_move_up_FILL0_wght400_GRAD0_opsz48.svg" id="10_tg1yt"]
+[ext_resource type="Texture2D" uid="uid://dn566hlhcn3wc" path="res://icons/options/resize_FILL0_wght400_GRAD0_opsz48.svg" id="11_lee44"]
+[ext_resource type="FontFile" uid="uid://csyjnpwhaob4v" path="res://upheavtt.ttf" id="14_dcvi4"]
+[ext_resource type="Texture2D" uid="uid://bvnx17k28aspq" path="res://icons/options/info_FILL0_wght400_GRAD0_opsz48.svg" id="14_pn632"]
+[ext_resource type="Texture2D" uid="uid://bumkqd7x8nmp4" path="res://icons/options/help_FILL0_wght400_GRAD0_opsz48.svg" id="15_uwm2q"]
+[ext_resource type="Texture2D" uid="uid://bda0f4aw5v4y3" path="res://icons/options/close_FILL0_wght400_GRAD0_opsz48.svg" id="16_6yju0"]
+[ext_resource type="Script" path="res://Close.gd" id="17_6kgbp"]
+[ext_resource type="PackedScene" uid="uid://xl6h5tb0nk78" path="res://closescreen.tscn" id="19_y6vj3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fa8ha"]
+content_margin_left = 6.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Theme" id="Theme_o4kgt"]
+default_font = ExtResource("4_4a2qu")
+default_font_size = 12
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_fa8ha")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upuvw"]
+content_margin_left = 10.0
+content_margin_right = 5.0
+bg_color = Color(0.145098, 0.145098, 0.145098, 1)
+
+[node name="Program" type="Node"]
+script = ExtResource("1_jnf3j")
+image = ExtResource("2_a48b2")
+subdiv = 5
+vertical_offset = 100
+prevent_repeat_color = true
+better_color = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_s3wkp")
+expand_mode = 1
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_o4kgt")
+
+[node name="ManageInput" type="Node" parent="Control"]
+script = ExtResource("5_vqtll")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Options" type="Control" parent="Control/HBoxContainer"]
+custom_minimum_size = Vector2(426, 720)
+layout_mode = 2
+
+[node name="OptionBack" type="ColorRect" parent="Control/HBoxContainer/Options"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer/Options"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="OptionsB" type="VBoxContainer" parent="Control/HBoxContainer/Options/VBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Welcome" type="RichTextLabel" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[wave]Hello!"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Basic" type="RichTextLabel" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_fonts/bold_font = ExtResource("14_dcvi4")
+bbcode_enabled = true
+text = "Welcome to [b]matrix[/b]. Please upload an image to get started. "
+fit_content = true
+scroll_active = false
+
+[node name="UploadedImage" type="TextureRect" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 2
+size_flags_horizontal = 4
+expand_mode = 1
+stretch_mode = 4
+
+[node name="gridy" type="VBoxContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="gridx" type="HBoxContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="ReferenceRect" type="ReferenceRect" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+border_color = Color(1, 1, 1, 1)
+border_width = 2.0
+editor_only = false
+
+[node name="spacer" type="Control" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Subdivisions" type="PanelContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+alignment = 1
+
+[node name="icn" type="TextureRect" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions/HBoxContainer"]
+modulate = Color(0.333333, 0.333333, 0.333333, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("6_lditq")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "Subdivisions"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="in_Subdiv" type="SpinBox" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 99.0
+value = 1.0
+alignment = 2
+update_on_text_changed = true
+
+[node name="Warning" type="TextureRect" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("6_g7j7u")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Alpha_threshold" type="PanelContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Alpha_threshold"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+alignment = 1
+
+[node name="icn" type="TextureRect" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Alpha_threshold/HBoxContainer5"]
+modulate = Color(0.333333, 0.333333, 0.333333, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("8_sitfy")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Alpha_threshold/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "Alpha Threshold"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="in_Alpha" type="SpinBox" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Alpha_threshold/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+alignment = 2
+
+[node name="Interpolation" type="PanelContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Interpolation"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+alignment = 1
+
+[node name="icn" type="TextureRect" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Interpolation/HBoxContainer2"]
+modulate = Color(0.333333, 0.333333, 0.333333, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("9_3h2di")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Interpolation/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "Interpolation"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="in_Interpol" type="OptionButton" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Interpolation/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_reselect = true
+
+[node name="Vertical_Offset" type="PanelContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Vertical_Offset"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+alignment = 1
+
+[node name="icn" type="TextureRect" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Vertical_Offset/HBoxContainer4"]
+modulate = Color(0.333333, 0.333333, 0.333333, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("10_tg1yt")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Vertical_Offset/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "Vertical Offset"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="in_Vertical" type="SpinBox" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Vertical_Offset/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 9999.0
+alignment = 2
+update_on_text_changed = true
+
+[node name="Size" type="PanelContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+alignment = 1
+
+[node name="icn" type="TextureRect" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size/HBoxContainer3"]
+modulate = Color(0.333333, 0.333333, 0.333333, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("11_lee44")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "Size"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="in_size_x" type="LineEdit" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size/HBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "x"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="in_size_y" type="LineEdit" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Warning" type="TextureButton" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size/HBoxContainer3"]
+visible = false
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture_normal = ExtResource("6_g7j7u")
+texture_pressed = ExtResource("7_s74l8")
+texture_hover = ExtResource("7_lgkxk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Control" type="Control" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Regen" type="Button" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Regenerate"
+
+[node name="Upload" type="Button" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+layout_mode = 2
+text = "Upload Image"
+
+[node name="Examples" type="HBoxContainer" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
+layout_mode = 2
+alignment = 2
+
+[node name="ea" type="Button" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples"]
+layout_mode = 2
+text = "Use Example A"
+
+[node name="eb" type="Button" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples"]
+layout_mode = 2
+text = "Use Example B"
+
+[node name="Preview" type="Control" parent="Control/HBoxContainer"]
+custom_minimum_size = Vector2(852, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PreviewBack" type="ColorRect" parent="Control/HBoxContainer/Preview"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.827451, 0.827451, 0.827451, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/Preview"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="CopyModule" type="GridContainer" parent="Control/HBoxContainer/Preview/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(234, 234)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+columns = 3
+
+[node name="PreviewGrid" type="GridContainer" parent="Control/HBoxContainer/Preview/HBoxContainer"]
+custom_minimum_size = Vector2(288, 288)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/h_separation = 1
+theme_override_constants/v_separation = 1
+columns = 48
+
+[node name="CMBScrollContainer" type="ScrollContainer" parent="Control/HBoxContainer/Preview/HBoxContainer"]
+custom_minimum_size = Vector2(234, 234)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="CopyModuleB" type="VBoxContainer" parent="Control/HBoxContainer/Preview/HBoxContainer/CMBScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ToggleOptions" type="HBoxContainer" parent="Control/HBoxContainer/Preview"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -224.0
+offset_top = -124.0
+offset_right = 224.0
+offset_bottom = -88.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Optimize" type="PanelContainer" parent="Control/HBoxContainer/Preview/ToggleOptions"]
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Control/HBoxContainer/Preview/ToggleOptions/Optimize"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/HBoxContainer/Preview/ToggleOptions/Optimize/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "Optimize"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="in_optimize" type="CheckButton" parent="Control/HBoxContainer/Preview/ToggleOptions/Optimize/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Colors" type="PanelContainer" parent="Control/HBoxContainer/Preview/ToggleOptions"]
+layout_mode = 2
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="Control/HBoxContainer/Preview/ToggleOptions/Colors"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/HBoxContainer/Preview/ToggleOptions/Colors/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "Better Colors"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="in_color" type="CheckButton" parent="Control/HBoxContainer/Preview/ToggleOptions/Colors/HBoxContainer7"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Transparency" type="PanelContainer" parent="Control/HBoxContainer/Preview/ToggleOptions"]
+layout_mode = 2
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="Control/HBoxContainer/Preview/ToggleOptions/Transparency"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/HBoxContainer/Preview/ToggleOptions/Transparency/HBoxContainer8"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "With Transparency"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="in_transparency" type="CheckButton" parent="Control/HBoxContainer/Preview/ToggleOptions/Transparency/HBoxContainer8"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Control2" type="Control" parent="."]
+custom_minimum_size = Vector2(1280, 30)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 30.0
+
+[node name="PanelContainer" type="PanelContainer" parent="Control2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_upuvw")
+
+[node name="bar" type="HBoxContainer" parent="Control2/PanelContainer"]
+layout_mode = 2
+
+[node name="Start" type="HBoxContainer" parent="Control2/PanelContainer/bar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control2/PanelContainer/bar/Start"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.396078, 0.396078, 0.396078, 1)
+theme_override_fonts/normal_font = ExtResource("14_dcvi4")
+bbcode_enabled = true
+text = "MATRIX"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Middle" type="HBoxContainer" parent="Control2/PanelContainer/bar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="End" type="HBoxContainer" parent="Control2/PanelContainer/bar"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Info" type="TextureButton" parent="Control2/PanelContainer/bar/End"]
+modulate = Color(0.745098, 0.745098, 0.745098, 1)
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("14_pn632")
+texture_pressed = ExtResource("14_pn632")
+texture_hover = ExtResource("15_uwm2q")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Close" type="TextureButton" parent="Control2/PanelContainer/bar/End"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("16_6yju0")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("17_6kgbp")
+
+[node name="close_screen" parent="." instance=ExtResource("19_y6vj3")]
+
+[connection signal="value_changed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions/HBoxContainer/in_Subdiv" to="Control/ManageInput" method="_on_in_subdiv_value_changed"]
+[connection signal="text_submitted" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size/HBoxContainer3/in_size_x" to="Control/ManageInput" method="_on_in_size_x_text_submitted"]
+[connection signal="text_submitted" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size/HBoxContainer3/in_size_y" to="Control/ManageInput" method="_on_in_size_y_text_submitted"]
+[connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size/HBoxContainer3/Warning" to="Control/ManageInput" method="_on_warning_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Regen" to="." method="_on_regen_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Upload" to="." method="_on_upload_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/ea" to="." method="_on_ea_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/eb" to="." method="_on_eb_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Optimize/HBoxContainer6/in_optimize" to="Control/ManageInput" method="_on_in_optimize_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Colors/HBoxContainer7/in_color" to="Control/ManageInput" method="_on_in_color_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Transparency/HBoxContainer8/in_transparency" to="Control/ManageInput" method="_on_in_transparency_pressed"]
+[connection signal="pressed" from="Control2/PanelContainer/bar/End/Info" to="Control/ManageInput" method="_on_info_pressed"]
+[connection signal="mouse_entered" from="Control2/PanelContainer/bar/End/Close" to="Control2/PanelContainer/bar/End/Close" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Control2/PanelContainer/bar/End/Close" to="Control2/PanelContainer/bar/End/Close" method="_on_mouse_exited"]
+[connection signal="pressed" from="Control2/PanelContainer/bar/End/Close" to="Control2/PanelContainer/bar/End/Close" method="_on_pressed"]
