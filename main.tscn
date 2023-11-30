@@ -378,11 +378,15 @@ alignment = 2
 
 [node name="ea" type="Button" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples"]
 layout_mode = 2
-text = "Use Example A"
+text = "Example A"
 
 [node name="eb" type="Button" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples"]
 layout_mode = 2
-text = "Use Example B"
+text = "Example B"
+
+[node name="ec" type="Button" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples"]
+layout_mode = 2
+text = "Example C"
 
 [node name="Preview" type="Control" parent="Control/HBoxContainer"]
 custom_minimum_size = Vector2(852, 0)
@@ -592,6 +596,7 @@ script = ExtResource("17_6kgbp")
 [connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Upload" to="." method="_on_upload_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/ea" to="." method="_on_ea_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/eb" to="." method="_on_eb_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/ec" to="." method="_on_ec_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Optimize/HBoxContainer6/in_optimize" to="Control/ManageInput" method="_on_in_optimize_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Colors/HBoxContainer7/in_color" to="Control/ManageInput" method="_on_in_color_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Transparency/HBoxContainer8/in_transparency" to="Control/ManageInput" method="_on_in_transparency_pressed"]

@@ -288,6 +288,7 @@ func to_hexa(col):
 func hide_welcome():
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Welcome.hide()
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Basic.hide()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples.hide()
 
 func _on_upload_pressed():
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Upload.release_focus()
@@ -321,7 +322,13 @@ func show_options():
 func load_selected(path : String):
 	show_options()
 	print(path)
-	image = load(path)
+	
+	var new_img = Image.new()
+	var data = new_img.load_from_file(path)
+	var imgtex = ImageTexture.new()
+	var img = imgtex.create_from_image(data)
+	
+	image = img#load(path)
 	uploaded_image.texture = image
 	generate()
 
@@ -345,6 +352,7 @@ func generate():
 
 const ramA = preload("res://ram.png")
 const ramB = preload("res://Ram_Infobox.png")
+const godot = preload("res://icon.svg")
 func _on_ea_pressed():
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples.hide()
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/ea.release_focus()
@@ -361,5 +369,15 @@ func _on_eb_pressed():
 	hide_welcome()
 	show_options()
 	image = ramB
+	uploaded_image.texture = image
+	generate()
+
+
+func _on_ec_pressed():
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples.hide()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/ec.release_focus()
+	hide_welcome()
+	show_options()
+	image = godot
 	uploaded_image.texture = image
 	generate()
