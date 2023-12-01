@@ -1,8 +1,11 @@
 # Matrix
-![Screenshot 2023-11-30 043354](https://github.com/Alkaliii/Matrix/assets/53021785/d3069bee-addc-41cf-b50f-1ddad9e7ce47)
-A small tool that converts images into text for screens in starship evo. I'll edit this a bit more later.
+![image](https://github.com/Alkaliii/Matrix/assets/53021785/f636a1ef-8f2d-4eb4-bb2b-9ef8fc38d548)
 
-## How to use Matix
+<i>A small tool that converts images into text for screens in <b>Starship Evo</b>.</i>
+
+Matrix Downscales, Cuts, and converts each pixel of a file into a color code preceding an "." to create a "dot matrix" of text that can be pasted into a transparent screen in the game <b>Starship Evo</b>. These screens can be restitched back together to produce the inital image in a retro style without all the hassle of literal pixel art in a bad interface.
+
+## How to Matrix
 - Upload a file or select an example. PNGs are good 👍
 - Use the options to tweak how the screen code is generated. Optimize and Better Colors really should be on by default.
 - After you set some options click 'Regenerate'.
@@ -11,4 +14,7 @@ A small tool that converts images into text for screens in starship evo. I'll ed
 
 
 --
+
+An example of Matrix Magic using Ram from Re:Zero.
+![image](https://github.com/Alkaliii/Matrix/assets/53021785/fd300b43-7e3d-41f0-b4c0-5708b335868c)
 
