@@ -3,4 +3,5 @@
 [node name="ReferenceRect" type="ReferenceRect"]
 size_flags_horizontal = 3
 size_flags_vertical = 3
+border_color = Color(1, 0.0784314, 0.576471, 1)
 editor_only = false

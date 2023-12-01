@@ -40,6 +40,7 @@ var cropped = false
 func _ready():
 	if not Engine.is_editor_hint():
 		Gsb.preview_img.connect(preview)
+		Gsb.update_image_info.connect(set_image_info)
 		Gsb.test.connect(test)
 		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Welcome.text = str(greeting.pick_random())
 		
@@ -94,7 +95,13 @@ func preview(img : Image):
 	for i in preview_grid.get_children():
 		i.queue_free()
 	
+	var sz = image.get_size()
+	if size[size.max_axis_index()] > sz[sz.max_axis_index()]:
+		return
+	
 	var base = img.get_size()
+	preview_grid.columns = base.x
+	#print("base",base)
 	for y in base.y:
 		for x in base.x:
 			var px = ColorRect.new()
@@ -104,9 +111,11 @@ func preview(img : Image):
 
 func cut_image():
 	if Engine.is_editor_hint(): return
-	
+	Gsb.kill_old_cut = true
 	for i in copy_module.get_children(): i.queue_free()
 	for i in copy_module_b.get_children(): i.queue_free()
+	await get_tree().process_frame
+	Gsb.kill_old_cut = false
 	
 	var cut = image.get_image()
 	var base = image.get_size()
@@ -120,15 +129,23 @@ func cut_image():
 	
 	cut.resize(size.x * subdiv,size.y * subdiv,interpolation)
 	
+	var slower = false
+	var sz = image.get_size()
+	if size[size.max_axis_index()] > sz[sz.max_axis_index()]:
+		slower = true
+	
+	
 	var cutup := []
 	for y in subdiv:
 		for x in subdiv:
 			cutup.append(cut.get_region(Rect2(Vector2(x * size.x,y * size.y),size)))
+			if slower: await get_tree().process_frame
 	
 	print(cutup.size()," screens")
+	Gsb.conB.emit(str("[",cutup.size(),"] sections"))
 	copy_module.columns = subdiv
 	var idx = 0
-	var wide = false if subdiv < 16 else true
+	var wide = false if subdiv < 14 else true
 	copy_module.visible = !wide
 	cmb_scroll_container.visible = wide
 	for i in cutup:
@@ -136,6 +153,8 @@ func cut_image():
 		cs.wide = wide
 		cs.icon = get_icon(idx)
 		cs.data = create_dot_matrix_from_image(i)
+		if slower: await get_tree().process_frame
+		cs.px_count = size[size.max_axis_index()] * size[size.max_axis_index()]
 		cs.img_dat = i
 		if wide:
 			cs.text = str("Screen ",cutup.find(i) + 1)
@@ -145,8 +164,9 @@ func cut_image():
 		cs._check_data()
 		if cropped: cs._shrink_disabled()
 		idx += 1
-		if idx % 3 == 0:
+		if idx % 2 == 0 and [true,false].pick_random():
 			await get_tree().process_frame
+		if Gsb.kill_old_cut == true: break
 	
 	await get_tree().process_frame
 	if wide:
@@ -192,6 +212,7 @@ func get_icon(idx : int):
 
 func create_dot_matrix_from_image(img : Image):
 	if Engine.is_editor_hint(): return
+	var pixel = "."
 	#img.resize(size.x,size.y,interpol)
 	var output : String = ""
 	if vertical_offset != 0:
@@ -206,12 +227,20 @@ func create_dot_matrix_from_image(img : Image):
 	for y in size.y:
 		for x in size.x:
 			var px = img.get_pixel(x,y)
+			var hex = px.to_html(true if with_transparency and px.a != 1 else false)
+			var shex = to_hexa([px.r8,px.g8,px.b8])
 			if better_color:
 				#generate whole ass color code
-				color_code = str("<#",px.to_html(true if with_transparency else false),">")
+				if hex.count(hex[0]) == 6: #Shortens aaaaaa to aaa
+					hex = hex.substr(0,3)
+				if Color.html(hex).is_equal_approx(Color.html(shex)): #Should turn aabbcc to abc
+					color_code = str("<#",shex,">")
+				else:
+					color_code = str("<#",hex,">")
+				if color_code in ["<#000000>","<#00000000>"]: color_code = "<#000>" #Cleans up null
+				if px.a == 0: color_code = "<#000>" #Cleans up null
 			else:
 				#generate shortened color code
-				var shex = to_hexa([px.r8,px.g8,px.b8])
 				if (px.a < alpha_threshold):
 					#alpha cut
 					shex = "000"
@@ -219,9 +248,9 @@ func create_dot_matrix_from_image(img : Image):
 			
 			#Add to output
 			if color_code.match(prev_code) and prevent_repeat_color:
-				output += "."
+				output += pixel
 			else:
-				output += str(color_code,".")
+				output += str(color_code,pixel)
 				prev_code = color_code
 		if y != size.y: output += "\n"
 	
@@ -319,6 +348,13 @@ func show_options():
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Regen.show()
 	$Control/HBoxContainer/Preview/ToggleOptions.show()
 
+func set_image_info():
+	size = Vector2(int(%in_size_x.text),int(%in_size_y.text))
+	var ii = $Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage/image_info
+	var sz = image.get_size()
+	var ss = round(sz[sz.max_axis_index()]/size[size.max_axis_index()])
+	ii.text = str("src: ",sz.x,"x",sz.y," \n[color=gray]suggested subdiv: ",ss if ss <= 16 else 16)
+
 func load_selected(path : String):
 	show_options()
 	print(path)
@@ -330,6 +366,7 @@ func load_selected(path : String):
 	
 	image = img#load(path)
 	uploaded_image.texture = image
+	set_image_info()
 	generate()
 
 func _on_regen_pressed():
@@ -337,18 +374,23 @@ func _on_regen_pressed():
 	generate()
 
 func generate():
+	Gsb.notify.emit(Gsb.n.ALL_GOOD)
 	subdiv = int(%in_Subdiv.value)
 	alpha_threshold = float(%in_Alpha.value)
 	interpolation = %in_Interpol.selected
 	vertical_offset = int(%in_Vertical.value)
 	size = Vector2(int(%in_size_x.text),int(%in_size_y.text))
+	var sz = image.get_size()
+	if size[size.max_axis_index()] > sz[sz.max_axis_index()]:
+		Gsb.notify.emit(Gsb.n.CRASH_LIKELY)
+		await get_tree().create_timer(1).timeout
 	
 	prevent_repeat_color = %in_optimize.button_pressed
 	better_color = %in_color.button_pressed
 	with_transparency = %in_transparency.button_pressed
 	
+	await cut_image()
 	setgrid()
-	cut_image()
 
 const ramA = preload("res://ram.png")
 const ramB = preload("res://Ram_Infobox.png")
@@ -360,6 +402,7 @@ func _on_ea_pressed():
 	show_options()
 	image = ramA
 	uploaded_image.texture = image
+	set_image_info()
 	generate()
 
 
@@ -370,6 +413,7 @@ func _on_eb_pressed():
 	show_options()
 	image = ramB
 	uploaded_image.texture = image
+	set_image_info()
 	generate()
 
 
@@ -380,4 +424,5 @@ func _on_ec_pressed():
 	show_options()
 	image = godot
 	uploaded_image.texture = image
+	set_image_info()
 	generate()

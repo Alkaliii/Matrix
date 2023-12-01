@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bfr6scil1p0vt"]
+[gd_scene load_steps=26 format=3 uid="uid://bfr6scil1p0vt"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_jnf3j"]
 [ext_resource type="Texture2D" uid="uid://s6odp8qwiaup" path="res://Ram_Infobox.png" id="2_a48b2"]
@@ -15,9 +15,12 @@
 [ext_resource type="Texture2D" uid="uid://dn566hlhcn3wc" path="res://icons/options/resize_FILL0_wght400_GRAD0_opsz48.svg" id="11_lee44"]
 [ext_resource type="FontFile" uid="uid://csyjnpwhaob4v" path="res://upheavtt.ttf" id="14_dcvi4"]
 [ext_resource type="Texture2D" uid="uid://bvnx17k28aspq" path="res://icons/options/info_FILL0_wght400_GRAD0_opsz48.svg" id="14_pn632"]
+[ext_resource type="Texture2D" uid="uid://bh3aflbfc0anv" path="res://icons/wysiwyg_FILL0_wght400_GRAD0_opsz24.svg" id="15_b24lw"]
 [ext_resource type="Texture2D" uid="uid://bumkqd7x8nmp4" path="res://icons/options/help_FILL0_wght400_GRAD0_opsz48.svg" id="15_uwm2q"]
 [ext_resource type="Texture2D" uid="uid://bda0f4aw5v4y3" path="res://icons/options/close_FILL0_wght400_GRAD0_opsz48.svg" id="16_6yju0"]
+[ext_resource type="Texture2D" uid="uid://ytqrv8kcxdyd" path="res://icons/note_FILL0_wght400_GRAD0_opsz24.svg" id="16_lxddx"]
 [ext_resource type="Script" path="res://Close.gd" id="17_6kgbp"]
+[ext_resource type="Texture2D" uid="uid://7mqtebecwnbd" path="res://icons/minimize_FILL0_wght400_GRAD0_opsz24.svg" id="19_h7ioe"]
 [ext_resource type="PackedScene" uid="uid://xl6h5tb0nk78" path="res://closescreen.tscn" id="19_y6vj3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fa8ha"]
@@ -162,6 +165,23 @@ grow_vertical = 2
 border_color = Color(1, 1, 1, 1)
 border_width = 2.0
 editor_only = false
+
+[node name="image_info" type="RichTextLabel" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_right = 134.0
+offset_bottom = 23.0
+grow_vertical = 0
+theme_override_fonts/bold_font = ExtResource("14_dcvi4")
+bbcode_enabled = true
+text = "Ram from Re:Zero."
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 
 [node name="spacer" type="Control" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
 custom_minimum_size = Vector2(0, 30)
@@ -436,6 +456,7 @@ columns = 48
 [node name="CMBScrollContainer" type="ScrollContainer" parent="Control/HBoxContainer/Preview/HBoxContainer"]
 custom_minimum_size = Vector2(234, 234)
 layout_mode = 2
+follow_focus = true
 horizontal_scroll_mode = 0
 
 [node name="CopyModuleB" type="VBoxContainer" parent="Control/HBoxContainer/Preview/HBoxContainer/CMBScrollContainer"]
@@ -547,12 +568,60 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Control2/PanelContainer/bar/Start"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_colors/default_color = Color(0.396078, 0.396078, 0.396078, 1)
 theme_override_fonts/normal_font = ExtResource("14_dcvi4")
 bbcode_enabled = true
 text = "MATRIX"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Home" type="Button" parent="Control2/PanelContainer/bar/Start"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.396078, 0.396078, 0.396078, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.0784314, 0.576471, 1)
+theme_override_fonts/font = ExtResource("14_dcvi4")
+text = "matrix"
+flat = true
+alignment = 0
+
+[node name="TextureButton" type="TextureButton" parent="Control2/PanelContainer/bar/Start"]
+modulate = Color(0.396078, 0.396078, 0.396078, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("15_b24lw")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="TextureButton2" type="TextureButton" parent="Control2/PanelContainer/bar/Start"]
+modulate = Color(0.396078, 0.396078, 0.396078, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("16_lxddx")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="spacer" type="Control" parent="Control2/PanelContainer/bar/Start"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="Notifcation_Center" type="RichTextLabel" parent="Control2/PanelContainer/bar/Start"]
+unique_name_in_owner = true
+clip_contents = false
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/normal_font = ExtResource("4_4a2qu")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "[color=656565]"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -566,9 +635,48 @@ layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
+[node name="Console_A" type="RichTextLabel" parent="Control2/PanelContainer/bar/End"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/normal_font = ExtResource("4_4a2qu")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "[color=656565]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="spacer" type="Control" parent="Control2/PanelContainer/bar/End"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="Console_B" type="RichTextLabel" parent="Control2/PanelContainer/bar/End"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/normal_font = ExtResource("4_4a2qu")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "[color=656565]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Minimize" type="TextureButton" parent="Control2/PanelContainer/bar/End"]
+modulate = Color(0.745098, 0.745098, 0.745098, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("19_h7ioe")
+ignore_texture_size = true
+stretch_mode = 5
+
 [node name="Info" type="TextureButton" parent="Control2/PanelContainer/bar/End"]
 modulate = Color(0.745098, 0.745098, 0.745098, 1)
-custom_minimum_size = Vector2(25, 25)
+custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_vertical = 4
 texture_normal = ExtResource("14_pn632")
@@ -578,7 +686,7 @@ ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Close" type="TextureButton" parent="Control2/PanelContainer/bar/End"]
-custom_minimum_size = Vector2(25, 25)
+custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_vertical = 4
 texture_normal = ExtResource("16_6yju0")
@@ -600,6 +708,7 @@ script = ExtResource("17_6kgbp")
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Optimize/HBoxContainer6/in_optimize" to="Control/ManageInput" method="_on_in_optimize_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Colors/HBoxContainer7/in_color" to="Control/ManageInput" method="_on_in_color_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Transparency/HBoxContainer8/in_transparency" to="Control/ManageInput" method="_on_in_transparency_pressed"]
+[connection signal="pressed" from="Control2/PanelContainer/bar/End/Minimize" to="Control/ManageInput" method="_on_minimize_pressed"]
 [connection signal="pressed" from="Control2/PanelContainer/bar/End/Info" to="Control/ManageInput" method="_on_info_pressed"]
 [connection signal="mouse_entered" from="Control2/PanelContainer/bar/End/Close" to="Control2/PanelContainer/bar/End/Close" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Control2/PanelContainer/bar/End/Close" to="Control2/PanelContainer/bar/End/Close" method="_on_mouse_exited"]
