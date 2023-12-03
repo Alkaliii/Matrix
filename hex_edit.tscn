@@ -1,34 +1,170 @@
-[gd_scene format=3 uid="uid://dwjvhscca1eac"]
+[gd_scene load_steps=4 format=3 uid="uid://dwjvhscca1eac"]
+
+[ext_resource type="FontFile" uid="uid://bydssj3oqdgqp" path="res://VCR_OSD_MONO_1.001.ttf" id="1_hr867"]
+[ext_resource type="Script" path="res://hex_edit.gd" id="1_le6dx"]
+[ext_resource type="FontFile" uid="uid://csyjnpwhaob4v" path="res://upheavtt.ttf" id="2_ny8y4"]
 
 [node name="Hex-Edit" type="Control"]
+custom_minimum_size = Vector2(426, 720)
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
 grow_vertical = 2
+script = ExtResource("1_le6dx")
 
 [node name="PreviewBack" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(426, 720)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -360.0
+offset_right = 426.0
+offset_bottom = 360.0
+grow_vertical = 2
+color = Color(0.827451, 0.827451, 0.827451, 1)
+
+[node name="Control" type="Control" parent="PreviewBack"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.827451, 0.827451, 0.827451, 1)
 
-[node name="CodeEdit" type="CodeEdit" parent="."]
-custom_minimum_size = Vector2(800, 500)
+[node name="VBoxContainer" type="VBoxContainer" parent="PreviewBack/Control"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -250.0
-offset_right = 300.0
-offset_bottom = 250.0
+offset_left = -150.0
+offset_top = -200.0
+offset_right = 150.0
+offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="title" type="RichTextLabel" parent="PreviewBack/Control/VBoxContainer"]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_hr867")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "Preview Text"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="tidbit" type="RichTextLabel" parent="PreviewBack/Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_hr867")
+theme_override_fonts/bold_font = ExtResource("2_ny8y4")
+bbcode_enabled = true
+text = "Use [CTRL-V] to look at what [b]matrix[/b] generated."
+fit_content = true
+scroll_active = false
+
+[node name="HSeparator" type="HSeparator" parent="PreviewBack/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="CodeEdit" type="CodeEdit" parent="PreviewBack/Control/VBoxContainer"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_hr867")
+placeholder_text = "paste
+some
+screen
+code
+here"
+caret_type = 1
 caret_blink = true
+
+[node name="close" type="Button" parent="PreviewBack/Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_hr867")
+theme_override_font_sizes/font_size = 12
+text = "close"
+
+[node name="HSeparator2" type="HSeparator" parent="PreviewBack/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="ca_ask" type="HBoxContainer" parent="PreviewBack/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="ca_tip" type="RichTextLabel" parent="PreviewBack/Control/VBoxContainer/ca_ask"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_hr867")
+theme_override_fonts/bold_font = ExtResource("2_ny8y4")
+bbcode_enabled = true
+text = "use custom adjustments?"
+fit_content = true
+scroll_active = false
+
+[node name="ca_select" type="CheckBox" parent="PreviewBack/Control/VBoxContainer/ca_ask"]
+layout_mode = 2
+
+[node name="Adjustments" type="LineEdit" parent="PreviewBack/Control/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "<align=center><line-height=16.75%><cspace=-0.11em>"
+
+[node name="c_screen_font" type="HBoxContainer" parent="PreviewBack/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="ca_tip" type="RichTextLabel" parent="PreviewBack/Control/VBoxContainer/c_screen_font"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_hr867")
+theme_override_fonts/bold_font = ExtResource("2_ny8y4")
+bbcode_enabled = true
+text = "export font"
+fit_content = true
+scroll_active = false
+
+[node name="font_select" type="OptionButton" parent="PreviewBack/Control/VBoxContainer/c_screen_font"]
+layout_mode = 2
+item_count = 2
+selected = 0
+popup/item_0/text = "Microgamma"
+popup/item_0/id = 0
+popup/item_1/text = "Inter"
+popup/item_1/id = 1
+
+[node name="c_font_size" type="HBoxContainer" parent="PreviewBack/Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="ca_tip" type="RichTextLabel" parent="PreviewBack/Control/VBoxContainer/c_font_size"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_hr867")
+theme_override_fonts/bold_font = ExtResource("2_ny8y4")
+bbcode_enabled = true
+text = "export font size"
+fit_content = true
+scroll_active = false
+
+[node name="size_select" type="SpinBox" parent="PreviewBack/Control/VBoxContainer/c_font_size"]
+layout_mode = 2
+max_value = 999.0
+step = 0.001
+value = 7.2
+
+[connection signal="pressed" from="PreviewBack/Control/VBoxContainer/close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="PreviewBack/Control/VBoxContainer/ca_ask/ca_select" to="." method="_on_ca_select_pressed"]

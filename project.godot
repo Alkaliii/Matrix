@@ -12,8 +12,11 @@ config_version=5
 
 config/name="DotMatrix"
 run/main_scene="res://main.tscn"
-config/features=PackedStringArray("4.1", "GL Compatibility")
+config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
+boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 0)
+boot_splash/image="res://matrixsplash.png"
 config/icon="res://icon.svg"
+boot_splash/minimum_display_time=160
 
 [autoload]
 
@@ -24,7 +27,13 @@ Gsb="*res://gsb.gd"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/borderless=true
+window/size/transparent=true
 window/stretch/mode="canvas_items"
+window/per_pixel_transparency/allowed=true
+
+[dotnet]
+
+project/assembly_name="DotMatrix"
 
 [rendering]
 

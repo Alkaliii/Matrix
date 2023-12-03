@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bfr6scil1p0vt"]
+[gd_scene load_steps=27 format=3 uid="uid://bfr6scil1p0vt"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_jnf3j"]
 [ext_resource type="Texture2D" uid="uid://s6odp8qwiaup" path="res://Ram_Infobox.png" id="2_a48b2"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://bvnx17k28aspq" path="res://icons/options/info_FILL0_wght400_GRAD0_opsz48.svg" id="14_pn632"]
 [ext_resource type="Texture2D" uid="uid://bh3aflbfc0anv" path="res://icons/wysiwyg_FILL0_wght400_GRAD0_opsz24.svg" id="15_b24lw"]
 [ext_resource type="Texture2D" uid="uid://bumkqd7x8nmp4" path="res://icons/options/help_FILL0_wght400_GRAD0_opsz48.svg" id="15_uwm2q"]
+[ext_resource type="PackedScene" uid="uid://dwjvhscca1eac" path="res://hex_edit.tscn" id="15_ykexn"]
 [ext_resource type="Texture2D" uid="uid://bda0f4aw5v4y3" path="res://icons/options/close_FILL0_wght400_GRAD0_opsz48.svg" id="16_6yju0"]
 [ext_resource type="Texture2D" uid="uid://ytqrv8kcxdyd" path="res://icons/note_FILL0_wght400_GRAD0_opsz24.svg" id="16_lxddx"]
 [ext_resource type="Script" path="res://Close.gd" id="17_6kgbp"]
@@ -323,6 +324,7 @@ autowrap_mode = 0
 [node name="in_Vertical" type="SpinBox" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Vertical_Offset/HBoxContainer4"]
 unique_name_in_owner = true
 layout_mode = 2
+min_value = -9999.0
 max_value = 9999.0
 alignment = 2
 update_on_text_changed = true
@@ -544,6 +546,27 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
 
+[node name="section_info" type="RichTextLabel" parent="Control/HBoxContainer/Preview"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 1
+offset_left = 80.0
+offset_top = 80.0
+offset_right = 214.0
+offset_bottom = 102.0
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/bold_font = ExtResource("14_dcvi4")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Hex-Edit" parent="Control" instance=ExtResource("15_ykexn")]
+layout_mode = 1
+offset_left = -1280.0
+offset_top = -360.0
+offset_right = -854.0
+offset_bottom = 360.0
+
 [node name="Control2" type="Control" parent="."]
 custom_minimum_size = Vector2(1280, 30)
 layout_mode = 3
@@ -590,7 +613,7 @@ text = "matrix"
 flat = true
 alignment = 0
 
-[node name="TextureButton" type="TextureButton" parent="Control2/PanelContainer/bar/Start"]
+[node name="OpenHex" type="TextureButton" parent="Control2/PanelContainer/bar/Start"]
 modulate = Color(0.396078, 0.396078, 0.396078, 1)
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
@@ -599,7 +622,7 @@ texture_normal = ExtResource("15_b24lw")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="TextureButton2" type="TextureButton" parent="Control2/PanelContainer/bar/Start"]
+[node name="SaveSevo" type="TextureButton" parent="Control2/PanelContainer/bar/Start"]
 modulate = Color(0.396078, 0.396078, 0.396078, 1)
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
@@ -694,6 +717,84 @@ ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("17_6kgbp")
 
+[node name="export_back" type="ColorRect" parent="Control2"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(1280, 0)
+layout_mode = 0
+offset_top = 30.0
+offset_right = 1280.0
+offset_bottom = 30.0
+color = Color(0.145098, 0.145098, 0.145098, 1)
+
+[node name="export_detail" type="RichTextLabel" parent="Control2/export_back"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 72.0
+offset_bottom = 64.0
+theme_override_fonts/normal_font = ExtResource("4_4a2qu")
+theme_override_fonts/bold_font = ExtResource("4_4a2qu")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 15
+bbcode_enabled = true
+text = "[wave]entityName [color=dark gray][b]folder[/b][/color]
+|- entityName.sevo [color=dark gray][b]blueprint[/b][/color]
+|- entityName.png [color=dark gray][b]thumbnail[/b][/color]
+|- entityName_preview.png [color=dark gray][b]additional thumbnail[/b][/color]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="namebp" type="HBoxContainer" parent="Control2"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(1210, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -590.0
+offset_top = 216.0
+offset_right = 590.0
+offset_bottom = 256.0
+grow_horizontal = 2
+
+[node name="name" type="LineEdit" parent="Control2/namebp"]
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("4_4a2qu")
+theme_override_font_sizes/font_size = 12
+placeholder_text = "set blueprint name"
+max_length = 32
+expand_to_text_length = true
+
+[node name="confirm" type="Button" parent="Control2/namebp"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.0784314, 0.576471, 1)
+theme_override_fonts/font = ExtResource("4_4a2qu")
+theme_override_font_sizes/font_size = 12
+text = "export"
+
+[node name="cancel" type="Button" parent="Control2/namebp"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("4_4a2qu")
+theme_override_font_sizes/font_size = 12
+text = "cancel"
+
+[node name="Control" type="Control" parent="Control2/namebp"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="close_screen" parent="." instance=ExtResource("19_y6vj3")]
 
 [connection signal="value_changed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions/HBoxContainer/in_Subdiv" to="Control/ManageInput" method="_on_in_subdiv_value_changed"]
@@ -708,8 +809,14 @@ script = ExtResource("17_6kgbp")
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Optimize/HBoxContainer6/in_optimize" to="Control/ManageInput" method="_on_in_optimize_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Colors/HBoxContainer7/in_color" to="Control/ManageInput" method="_on_in_color_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Transparency/HBoxContainer8/in_transparency" to="Control/ManageInput" method="_on_in_transparency_pressed"]
+[connection signal="pressed" from="Control2/PanelContainer/bar/Start/Home" to="." method="_on_home_pressed"]
+[connection signal="pressed" from="Control2/PanelContainer/bar/Start/OpenHex" to="Control/ManageInput" method="_on_open_hex_pressed"]
+[connection signal="pressed" from="Control2/PanelContainer/bar/Start/SaveSevo" to="." method="_on_save_sevo_pressed"]
 [connection signal="pressed" from="Control2/PanelContainer/bar/End/Minimize" to="Control/ManageInput" method="_on_minimize_pressed"]
 [connection signal="pressed" from="Control2/PanelContainer/bar/End/Info" to="Control/ManageInput" method="_on_info_pressed"]
 [connection signal="mouse_entered" from="Control2/PanelContainer/bar/End/Close" to="Control2/PanelContainer/bar/End/Close" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Control2/PanelContainer/bar/End/Close" to="Control2/PanelContainer/bar/End/Close" method="_on_mouse_exited"]
 [connection signal="pressed" from="Control2/PanelContainer/bar/End/Close" to="Control2/PanelContainer/bar/End/Close" method="_on_pressed"]
+[connection signal="text_changed" from="Control2/namebp/name" to="Control/ManageInput" method="_on_name_text_changed"]
+[connection signal="pressed" from="Control2/namebp/confirm" to="." method="_on_confirm_pressed"]
+[connection signal="pressed" from="Control2/namebp/cancel" to="." method="_on_cancel_pressed"]
