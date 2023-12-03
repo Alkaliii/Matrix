@@ -14,11 +14,15 @@ extends Node
 @export var interpolation : Image.Interpolation = Image.INTERPOLATE_BILINEAR #itp = itp.BILINEAR
 @export var size := Vector2(48,48)
 
-@export var vertical_offset : int = 0
+@export var vertical_offset : int = 0 #217
+var custom_adjustments := "<align=center><line-height=16.75%><cspace=-0.11em>"
 @export_range(0,1,0.01) var alpha_threshold = 0.3
 @export var prevent_repeat_color := false : set = prc_set
 @export var better_color := false : set = bc_set
 @export var with_transparency := false
+
+var override_font = 0
+var override_font_size = 7.2
 
 const gridm = preload("res://gridm.tscn")
 
@@ -36,11 +40,16 @@ const greeting = ["[wave]Hello!","[wave]Yellow!","[wave]Hi!","[shake]Heyyo!","[w
 
 var cropped = false
 
+var entityName = ""
+var save_folder = ""
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if not Engine.is_editor_hint():
 		Gsb.preview_img.connect(preview)
 		Gsb.update_image_info.connect(set_image_info)
+		Gsb.update_section_info.connect(set_section_info)
+		Gsb.hex_ui.connect(set_customs)
 		Gsb.test.connect(test)
 		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Welcome.text = str(greeting.pick_random())
 		
@@ -52,6 +61,9 @@ func _ready():
 		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size.hide()
 		$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Regen.hide()
 		$Control/HBoxContainer/Preview/ToggleOptions.hide()
+		$Control2/PanelContainer/bar/Start/SaveSevo.hide()
+		$Control2/PanelContainer/bar/Start/OpenHex.hide()
+		
 		uploaded_image.texture = preload("res://ram.png")
 #		grid.material.set_shader_parameter("size",Vector2(250,250))
 #		grid.material.set_shader_parameter("grid_size",floor(250.0/float(subdiv)))
@@ -162,7 +174,7 @@ func cut_image():
 		else:
 			copy_module.add_child(cs)
 		cs._check_data()
-		if cropped: cs._shrink_disabled()
+		if cropped or wide: cs._shrink_disabled()
 		idx += 1
 		if idx % 2 == 0 and [true,false].pick_random():
 			await get_tree().process_frame
@@ -218,8 +230,9 @@ func create_dot_matrix_from_image(img : Image):
 	if vertical_offset != 0:
 		output += str("<line-height=",vertical_offset * -1,">")
 		output += "\n"
-	output += "<align=center><line-height=16.75%><cspace=-0.11em>"
-	output += "\n"
+	if custom_adjustments != "":
+		output += custom_adjustments#"<align=center><line-height=16.75%><cspace=-0.11em>"
+		output += "\n"
 	
 	var prev_code = ""
 	var color_code = ""
@@ -346,7 +359,24 @@ func show_options():
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Vertical_Offset.show()
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size.show()
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Regen.show()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Upload.show()
 	$Control/HBoxContainer/Preview/ToggleOptions.show()
+	$Control2/PanelContainer/bar/Start/SaveSevo.show()
+	$Control2/PanelContainer/bar/Start/OpenHex.show()
+	if subdiv < 14: $Control/HBoxContainer/Preview/HBoxContainer/CopyModule.show()
+	else: $Control/HBoxContainer/Preview/HBoxContainer/CMBScrollContainer/CopyModuleB.show()
+
+func hide_some_options():
+	#$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions.hide()
+	#$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Alpha_threshold.hide()
+	#$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Interpolation.hide()
+	#$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Vertical_Offset.hide()
+	#$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size.hide()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Regen.hide()
+	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Upload.hide()
+	$Control/HBoxContainer/Preview/HBoxContainer/CopyModule.hide()
+	$Control/HBoxContainer/Preview/HBoxContainer/CMBScrollContainer/CopyModuleB.hide()
+	#$Control/HBoxContainer/Preview/ToggleOptions.hide()
 
 func set_image_info():
 	size = Vector2(int(%in_size_x.text),int(%in_size_y.text))
@@ -354,6 +384,10 @@ func set_image_info():
 	var sz = image.get_size()
 	var ss = round(sz[sz.max_axis_index()]/size[size.max_axis_index()])
 	ii.text = str("src: ",sz.x,"x",sz.y," \n[color=gray]suggested subdiv: ",ss if ss <= 16 else 16)
+
+func set_section_info(char_count,px_count):
+	var prc = floor(char_count/16300.0 * 100)
+	$Control/HBoxContainer/Preview/section_info.text = str("sec: / char: ",char_count,"/16300 (",prc,"%) / ",px_count," px")
 
 func load_selected(path : String):
 	show_options()
@@ -426,3 +460,139 @@ func _on_ec_pressed():
 	uploaded_image.texture = image
 	set_image_info()
 	generate()
+
+func show_nd():
+	if !entityName.is_valid_filename(): $Control2/namebp/name.text = ""
+	else: $Control/ManageInput._on_name_text_changed(entityName)
+	
+	if $Control2/namebp.visible:
+		$Control/ManageInput.animate_export("OUT")
+		show_options()
+	else:
+		$Control/ManageInput.animate_export("IN")
+		hide_some_options()
+	#$Control2/namebp.show()
+
+func _on_save_sevo_pressed():
+	if subdiv <= 16:
+		show_nd()
+	else:
+		#warning
+		Gsb.notify.emit(Gsb.n.TOO_MANY_FOR_EXPORT) 
+		return
+
+func _on_cancel_pressed():
+	$Control/ManageInput.animate_export("OUT")
+	show_options()
+	if entityName.is_valid_filename():
+		$Control2/namebp/name.text = entityName
+	#$Control2/namebp.hide()
+
+func _on_confirm_pressed():
+	#$Control2/namebp.hide()
+	entityName = $Control2/namebp/name.text
+	entityName.to_camel_case()
+	if !entityName.is_valid_filename():
+		#warning
+		Gsb.notify.emit(Gsb.n.BAD_EXPORT_NAME) 
+		entityName = "MatrixExport"
+		$Control2/namebp/name.text = entityName
+		$Control/ManageInput._on_name_text_changed(entityName)
+		return
+	
+	_on_cancel_pressed()
+	Gsb.notify.emit(Gsb.n.ALL_GOOD) 
+	
+	var fd = FileDialog.new()
+	fd.file_mode = FileDialog.FILE_MODE_OPEN_DIR
+	fd.access = FileDialog.ACCESS_FILESYSTEM
+	fd.ok_button_text = "Select Folder"
+	fd.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_SCREEN_WITH_MOUSE_FOCUS
+	fd.size = Vector2(800,500)
+	fd.dir_selected.connect(dir_selected)
+	fd.canceled.connect(_on_cancel_pressed)
+	self.add_child(fd)
+	fd.popup()
+
+func dir_selected(path : String):
+	save_folder = path
+	
+	var array_matrix = get_matrix()
+	var sevo_file = load("res://sevo/Parse_sevo.cs")
+	var parse_sevo = sevo_file.new()
+	self.add_child(parse_sevo)
+	
+	var dir = DirAccess
+	var new_folder = str(save_folder,"/",entityName)
+	
+	if dir.dir_exists_absolute(new_folder): pass
+	else:
+		dir.make_dir_absolute(new_folder)
+	
+	parse_sevo.WriteMP(array_matrix,entityName,override_font,override_font_size)
+	
+	var new_mp = parse_sevo.byte_matrix
+	var file = str(new_folder,"/",entityName,".sevo")
+	
+	if FileAccess.file_exists(file):
+		dir.copy_absolute(file, file + "bu")
+	else: FileAccess.open(file + "bu",FileAccess.WRITE_READ).store_buffer(new_mp)
+	
+	var png = image.get_image()
+	png.resize(128,128,Image.INTERPOLATE_BILINEAR)
+	png.save_png(str(new_folder,"/",entityName,".png"))
+	
+	var pre = get_window().get_viewport().get_texture().get_image()
+	var factor = Vector2(960,540)/Vector2(pre.get_size())
+	pre.resize(round(pre.get_size().x * factor.x),round(pre.get_size().y * factor.y),Image.INTERPOLATE_BILINEAR)
+	pre.save_png(str(new_folder,"/",entityName,"_preview.png"))
+	
+	FileAccess.open(file,FileAccess.WRITE_READ).store_buffer(new_mp)
+	#notify finish?
+	
+	await get_tree().process_frame
+	parse_sevo.queue_free()
+
+func get_matrix():
+	var cm = copy_module.get_children() if copy_module.visible else copy_module_b.get_children()
+	var matrix = PackedStringArray()
+	
+	#for i in 256:
+		#matrix.append(str(i))
+	#return matrix
+	
+	var idx = 0
+	
+	for i in cm:
+		if !i is copy_screen: continue
+		matrix.append(i.data if !i.disabled else Gsb.delete_screen)
+		if idx == subdiv and subdiv < 16:
+			#end of row?
+			idx = 0
+			for e in 16-subdiv:
+				matrix.append(Gsb.delete_screen)
+		idx += 1
+	
+	for i in 256 - matrix.size():
+		matrix.append(Gsb.delete_screen)
+	
+	return matrix
+
+
+func _on_home_pressed():
+	get_tree().reload_current_scene()
+
+func set_customs(val):
+	var hexuin = $"Control/Hex-Edit"
+	var old_ad = custom_adjustments
+	if hexuin.ca:
+		override_font = hexuin.cf
+		override_font_size = hexuin.cfs
+		custom_adjustments = str(hexuin.adju)
+		print("hi")
+	else:
+		override_font = 0
+		override_font_size = 7.2
+		custom_adjustments = "<align=center><line-height=16.75%><cspace=-0.11em>"
+	await get_tree().create_timer(0.5).timeout
+	if val == "CLOSE" and old_ad != custom_adjustments: generate()

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EntityMetaData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <name>Matrix_16S_Template</name>
+  <faction />
+  <type>spaceship</type>
+  <boundCenter>
+    <x>0.125000387</x>
+    <y>-1.75000119</y>
+    <z>2.5</z>
+  </boundCenter>
+  <boundSize>
+    <x>0.0625003</x>
+    <y>4</y>
+    <z>3.99999976</z>
+  </boundSize>
+  <codexVersion>8</codexVersion>
+  <weaponScore>0</weaponScore>
+  <thirdPersonCameraFactorForward>0</thirdPersonCameraFactorForward>
+  <thirdPersonCameraFactorUp>0</thirdPersonCameraFactorUp>
+  <mass>12800</mass>
+  <brickNumber>256</brickNumber>
+  <powerProduced>0</powerProduced>
+  <stationModuleType>0</stationModuleType>
+  <pcgSpawnModuleType>0</pcgSpawnModuleType>
+  <kioskType>0</kioskType>
+  <submoduleTag />
+  <missionDescriptor />
+  <randomizeRotation>false</randomizeRotation>
+  <upDirection>
+    <x>0</x>
+    <y>1</y>
+    <z>0</z>
+  </upDirection>
+  <isEndCap>false</isEndCap>
+  <dockingPortDatas />
+  <autoRefillReactors>true</autoRefillReactors>
+  <forceUpward>false</forceUpward>
+  <spawnWeight>0</spawnWeight>
+  <collisionOff>false</collisionOff>
+  <shipwideOxygen>false</shipwideOxygen>
+  <stationGenerationData>
+    <usePGC>false</usePGC>
+    <moduleMinRange>
+      <x>0</x>
+      <y>0</y>
+    </moduleMinRange>
+    <moduleMaxRange>
+      <x>0</x>
+      <y>0</y>
+    </moduleMaxRange>
+    <moduleTypeRanges />
+  </stationGenerationData>
+  <isWorldWreck>false</isWorldWreck>
+</EntityMetaData>

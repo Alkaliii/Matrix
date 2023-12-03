@@ -128,6 +128,10 @@ func notify(n : Gsb.n):
 			noti.text = str("[color=656565]The current settings will probably [color=orange red][shake]crash[/shake][/color] this program.")
 		Gsb.n.BAD_GENERATION:
 			noti.text = str("[color=656565]The current settings may generate [tornado]bad[/tornado] results.")
+		Gsb.n.BAD_EXPORT_NAME:
+			noti.text = str("[color=656565]That [color=orange red]name isn't good[/color] for your filesystem! Come up with something else.")
+		Gsb.n.TOO_MANY_FOR_EXPORT:
+			noti.text = str("[color=656565]You can't export with that many subdivisions. Sorry!")
 
 func set_consoleA(stri : String):
 	%Console_A.text = str("[color=656565]",stri)
@@ -136,3 +140,35 @@ func set_consoleA(stri : String):
 
 func set_consoleB(stri : String):
 	%Console_B.text = str("[color=656565]",stri)
+
+const export_names := ["Mona_Lisa","Masterpiece","frame_19","entityName","projectv4_FINAL","original_filename"]
+
+func _on_name_text_changed(new_text):
+	if new_text != "MatrixExport": Gsb.notify.emit(Gsb.n.ALL_GOOD)
+	%export_detail.text = "[wave]%s [color=dark gray][b]folder[/b][/color]
+|- %s.sevo [color=dark gray][b]blueprint[/b][/color]
+|- %s.png [color=dark gray][b]thumbnail[/b][/color]
+|- %s_preview.png [color=dark gray][b]additional thumbnail[/b][/color]" % [new_text,new_text,new_text,new_text]
+
+func animate_export(state):
+	var TWEE = get_tree().create_tween()
+	match state:
+		"IN":
+			%namebp.show()
+			TWEE.tween_property(%export_back,"size:y",250,0.25).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+			TWEE.tween_property(%namebp,"modulate",Color(1,1,1,1),0.15).set_ease(Tween.EASE_IN_OUT)
+		"OUT":
+			TWEE.tween_property(%namebp,"modulate",Color(1,1,1,0),0.15).set_ease(Tween.EASE_IN_OUT)
+			TWEE.tween_property(%export_back,"size:y",0,0.5).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+			await TWEE.finished
+			%namebp.hide()
+			_on_name_text_changed(export_names.pick_random())
+
+
+func _on_open_hex_pressed():
+	match Gsb.hex:
+		true:
+			Gsb.hex_ui.emit("CLOSE")
+		false:
+			Gsb.hex_ui.emit("OPEN")
+	Gsb.hex = !Gsb.hex

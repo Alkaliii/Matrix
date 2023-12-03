@@ -44,6 +44,9 @@ func _shrink_disabled():
 func copy():
 	self.grab_click_focus()
 	Gsb.preview_img.emit(img_dat)
+	var charc = data.length()
+	var pxc = img_dat.get_size().x * img_dat.get_size().y
+	Gsb.update_section_info.emit(charc,pxc)
 	#Gsb.test.emit(data)
 	DisplayServer.clipboard_set(data)
 	print("copied to clipboard!")
