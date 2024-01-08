@@ -7,6 +7,10 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var parse_sevo = load("res://sevo/Parse_sevo.cs").new()
+	parse_sevo.ReadMP("res://Matrix_16S_Template/Matrix_16S_Template.sevo")
+	
+	return
 	var result = FileAccess.get_file_as_bytes("res://16Screen.sevo")
 	
 	var sevo_file = load("res://sevo/Parse_sevo.cs")

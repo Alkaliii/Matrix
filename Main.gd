@@ -517,7 +517,7 @@ func _on_confirm_pressed():
 func dir_selected(path : String):
 	save_folder = path
 	
-	var array_matrix = get_matrix()
+	var array_matrix = get_matrixB()
 	var sevo_file = load("res://sevo/Parse_sevo.cs")
 	var parse_sevo = sevo_file.new()
 	self.add_child(parse_sevo)
@@ -529,8 +529,9 @@ func dir_selected(path : String):
 	else:
 		dir.make_dir_absolute(new_folder)
 	
-	parse_sevo.WriteMP(array_matrix,entityName,override_font,override_font_size)
-	
+	#parse_sevo.WriteMP(array_matrix,entityName,override_font,override_font_size)
+	parse_sevo.CreateMP(array_matrix,subdiv,entityName,override_font,override_font_size)
+	await get_tree().process_frame
 	var new_mp = parse_sevo.byte_matrix
 	var file = str(new_folder,"/",entityName,".sevo")
 	
@@ -552,6 +553,16 @@ func dir_selected(path : String):
 	
 	await get_tree().process_frame
 	parse_sevo.queue_free()
+
+func get_matrixB():
+	var cm = copy_module.get_children() if copy_module.visible else copy_module_b.get_children()
+	var matrix = PackedStringArray()
+	
+	for i in cm:
+		if !i is copy_screen: continue
+		matrix.append(i.data if !i.disabled else Gsb.delete_screen)
+	
+	return matrix
 
 func get_matrix():
 	var cm = copy_module.get_children() if copy_module.visible else copy_module_b.get_children()

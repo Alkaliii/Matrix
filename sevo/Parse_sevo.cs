@@ -95,6 +95,89 @@ public partial class Parse_sevo : Node
 		GD.Print("end");
 	}
 
+	public void CreateMP(string[] matrix,long subdiv = 16,string mName = "new",long mfont = 0, double mfont_size = 7.2) {
+		string path = "res://Matrix_16S_Template/Matrix_16S_Template.sevo";
+
+		Sevo.BrickEntityMp NEW = MessagePackSerializer.Deserialize<Sevo.BrickEntityMp>(Godot.FileAccess.GetFileAsBytes(path),lz4Options);//new Sevo.BrickEntityMp();
+		Sevo.BrickEntityMp REF = MessagePackSerializer.Deserialize<Sevo.BrickEntityMp>(Godot.FileAccess.GetFileAsBytes(path),lz4Options);
+
+		NEW.EntityName = mName;
+		//NEW.BrickDatas.Datas = new Sevo.BrickInstanceData();
+		Sevo.BrickDatasSave newbds = new Sevo.BrickDatasSave();
+		newbds.Datas = new Sevo.BrickInstanceData[matrix.Count()];
+        NEW.BrickDatas = newbds;
+        NEW.Commands = new List<Sevo.NewCommand_mp>();
+
+		int row = 0;
+		int rowidx = 0;
+		int column = 0;
+
+		if (mfont > 1 ^ mfont < 0) {
+				GD.PrintErr("Assigned Non-existant font, corruption likely.");
+			}
+
+		for (int i = 0; i < matrix.Count(); i++) {
+			Sevo.NewCommand_mp screen = REF.Commands[9];
+			InputTextData screendata = new InputTextData();
+			Sevo.ChildrenBrickId newbid = new Sevo.ChildrenBrickId();
+			screendata.text = matrix[i].ToString();
+			screendata.isWrapped = false;
+			screendata.font = (int)mfont;
+			screendata.fontSize = (float)mfont_size;
+
+			newbid.brickId = i;
+			newbid.childrenId = -1; //this is just how it is...
+			// Why 9, I'm pretty sure it's a screen.
+			screen.childrenBrickId = newbid;
+			screen.customData = MessagePackSerializer.Serialize<InputTextData>(screendata, (MessagePackSerializerOptions) null, new CancellationToken());
+			
+			Sevo.BrickInstanceData screeninstancedata = new Sevo.BrickInstanceData();
+			UnityEngine.Vector3Int gpos = new UnityEngine.Vector3Int();
+			screeninstancedata = REF.BrickDatas.Datas[9];
+			gpos.x = 0;
+			gpos.y = row;
+			gpos.z = column;
+			screeninstancedata.gridPosition = gpos;
+			NEW.Commands.Append(screen);
+			NEW.BrickDatas.Datas.SetValue(screeninstancedata,i);
+
+			column += 8;
+			if (rowidx == subdiv - 1) {
+				rowidx = 0;
+				column = 0;
+				row -= 8;
+			} else {
+				rowidx += 1;
+			};
+		}
+
+		byte_matrix = MessagePackSerializer.Serialize<Sevo.BrickEntityMp>(NEW,lz4Options);
+	}
+
+	public void ReadMP(string path) {
+		Sevo.BrickEntityMp mp = MessagePackSerializer.Deserialize<Sevo.BrickEntityMp>(Godot.FileAccess.GetFileAsBytes(path),lz4Options);
+		GD.Print(mp.Commands[9]);
+		//foreach (Sevo.BrickInstanceData bds in mp.BrickDatas.Datas) {
+		//	GD.Print(bds.brickId);
+		//}
+	}
+
+	public Godot.Vector3 Unity2GodotV3(UnityEngine.Vector3 u2g) {
+		Godot.Vector3 newu2g = Vector3.Zero;
+		newu2g.X = u2g.x;
+		newu2g.Y = u2g.y;
+		newu2g.Z = u2g.z;
+		return newu2g;
+	}
+
+	public Godot.Vector3I Unity2GodotV3I(UnityEngine.Vector3Int u2g) {
+		Godot.Vector3I newu2g = Vector3I.Zero;
+		newu2g.X = u2g.x;
+		newu2g.Y = u2g.y;
+		newu2g.Z = u2g.z;
+		return newu2g;
+	}
+
 	public void SaveToDiskAtPath(string path,byte[] data) {
 		if (Godot.FileAccess.FileExists(path)) {
 			if (new FileInfo(path).Length > 1L) {
