@@ -5,6 +5,7 @@ signal preview_img
 signal update_image_info
 signal update_section_info
 signal hex_ui
+signal help_ui
 signal notify
 signal conA
 signal conB

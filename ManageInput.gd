@@ -103,6 +103,7 @@ func _on_in_transparency_pressed():
 func _on_info_pressed():
 	Gsb.info = !Gsb.info
 	await get_tree().process_frame
+	Gsb.help_ui.emit("OPEN")
 	get_window().borderless = Gsb.info
 	get_window().size = Vector2(1280,720)
 	DisplayServer.window_set_position(Vector2(DisplayServer.screen_get_position()) + DisplayServer.screen_get_size()*0.5 - DisplayServer.window_get_size()*0.5)

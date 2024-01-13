@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://r5i2adyyr7du"]
+
+[ext_resource type="Script" path="res://Splash.gd" id="1_pm0di"]
+[ext_resource type="Texture2D" uid="uid://bjmsvk8raxbgf" path="res://Splash2.png" id="2_fx0hn"]
+
+[node name="Splash" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pm0di")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(640, 360)
+color = Color(0.827451, 0.827451, 0.827451, 1)
+
+[node name="Splash" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -728.0
+offset_top = -400.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("2_fx0hn")

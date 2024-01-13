@@ -104,9 +104,12 @@ public partial class Parse_sevo : Node
 		NEW.EntityName = mName;
 		//NEW.BrickDatas.Datas = new Sevo.BrickInstanceData();
 		Sevo.BrickDatasSave newbds = new Sevo.BrickDatasSave();
-		newbds.Datas = new Sevo.BrickInstanceData[matrix.Count()];
+		newbds.Datas = new Sevo.BrickInstanceData[matrix.Length + 1];
         NEW.BrickDatas = newbds;
-        NEW.Commands = new List<Sevo.NewCommand_mp>();
+        NEW.Commands = new List<Sevo.NewCommand_mp>(new Sevo.NewCommand_mp[matrix.Length]);
+
+		//screens can't have IDs of 0 I think
+		NEW.BrickDatas.Datas[0] = REF.BrickDatas.Datas[0];
 
 		int row = 0;
 		int rowidx = 0;
@@ -116,8 +119,16 @@ public partial class Parse_sevo : Node
 				GD.PrintErr("Assigned Non-existant font, corruption likely.");
 			}
 
-		for (int i = 0; i < matrix.Count(); i++) {
-			Sevo.NewCommand_mp screen = REF.Commands[9];
+		for (int i = 0; i < matrix.Length; i++) {
+			// Sevo.NewCommand_mp screen = REF.Commands[9];
+			Sevo.NewCommand_mp screen = new Sevo.NewCommand_mp(
+				REF.Commands[9].commandTargets,
+				REF.Commands[9].data,
+				REF.Commands[9].state,
+				REF.Commands[9].customData,
+				REF.Commands[9].childrenBrickId,
+				REF.Commands[9].commandLabel
+			);
 			InputTextData screendata = new InputTextData();
 			Sevo.ChildrenBrickId newbid = new Sevo.ChildrenBrickId();
 			screendata.text = matrix[i].ToString();
@@ -125,11 +136,12 @@ public partial class Parse_sevo : Node
 			screendata.font = (int)mfont;
 			screendata.fontSize = (float)mfont_size;
 
-			newbid.brickId = i;
+			newbid.brickId = i + 1;
 			newbid.childrenId = -1; //this is just how it is...
 			// Why 9, I'm pretty sure it's a screen.
 			screen.childrenBrickId = newbid;
-			screen.customData = MessagePackSerializer.Serialize<InputTextData>(screendata, (MessagePackSerializerOptions) null, new CancellationToken());
+			byte[] cds = MessagePackSerializer.Serialize<InputTextData>(screendata, (MessagePackSerializerOptions) null, new CancellationToken());
+			screen.customData = cds;
 			
 			Sevo.BrickInstanceData screeninstancedata = new Sevo.BrickInstanceData();
 			UnityEngine.Vector3Int gpos = new UnityEngine.Vector3Int();
@@ -138,8 +150,12 @@ public partial class Parse_sevo : Node
 			gpos.y = row;
 			gpos.z = column;
 			screeninstancedata.gridPosition = gpos;
-			NEW.Commands.Append(screen);
-			NEW.BrickDatas.Datas.SetValue(screeninstancedata,i);
+			screeninstancedata.instanceId = i + 1;
+			//// NEW.Commands.Append(screen);
+			// GD.Print(matrix.Length," - ",NEW.Commands.Count," - ",i);
+			NEW.Commands[i] = screen;
+			//NEW.BrickDatas.Datas.SetValue(screeninstancedata,i);
+			NEW.BrickDatas.Datas[i + 1] = screeninstancedata;
 
 			column += 8;
 			if (rowidx == subdiv - 1) {
@@ -156,9 +172,24 @@ public partial class Parse_sevo : Node
 
 	public void ReadMP(string path) {
 		Sevo.BrickEntityMp mp = MessagePackSerializer.Deserialize<Sevo.BrickEntityMp>(Godot.FileAccess.GetFileAsBytes(path),lz4Options);
-		GD.Print(mp.Commands[9]);
-		//foreach (Sevo.BrickInstanceData bds in mp.BrickDatas.Datas) {
-		//	GD.Print(bds.brickId);
+		//GD.Print(mp.Commands.First().childrenBrickId.brickId);
+		//GD.Print(mp.BrickDatas.Datas.First().instanceId);
+		//GD.Print(mp.Commands[9]);
+		//GD.Print(mp.BrickDatas.IdsToRecycle);
+		//GD.Print(mp.BrickDatas.Datas.Count());
+		//var itd = MessagePackSerializer.Deserialize<InputTextData>(mp.Commands.Last().customData);
+		//GD.Print(itd.text);
+		var i = 0;
+		foreach (Sevo.BrickInstanceData bds in mp.BrickDatas.Datas) {
+			GD.Print(bds.instanceId);
+			GD.Print(mp.Commands[i].childrenBrickId.brickId);
+			i++;
+		}
+		//foreach (Sevo.NewCommand_mp nc in mp.Commands) {
+			//var itd = MessagePackSerializer.Deserialize<InputTextData>(nc.customData);
+			//GD.Print(itd.text);
+			//GD.Print(nc.commandLabel);
+			//GD.Print(nc.childrenBrickId.brickId);
 		//}
 	}
 

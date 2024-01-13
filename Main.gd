@@ -39,12 +39,15 @@ const icn_clear = preload("res://icons/border_clear_FILL0_wght400_GRAD0_opsz48.s
 const greeting = ["[wave]Hello!","[wave]Yellow!","[wave]Hi!","[shake]Heyyo!","[wave]Whats up!","[wave]Yo!","[tornado]Hmm..."]
 
 var cropped = false
+var listThreshold = 11
 
 var entityName = ""
 var save_folder = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	get_window().set_size(Vector2(1280,720))
+	DisplayServer.window_set_position(Vector2(DisplayServer.screen_get_position()) + DisplayServer.screen_get_size()*0.5 - DisplayServer.window_get_size()*0.5)
 	if not Engine.is_editor_hint():
 		Gsb.preview_img.connect(preview)
 		Gsb.update_image_info.connect(set_image_info)
@@ -65,6 +68,7 @@ func _ready():
 		$Control2/PanelContainer/bar/Start/OpenHex.hide()
 		
 		uploaded_image.texture = preload("res://ram.png")
+		image = null
 #		grid.material.set_shader_parameter("size",Vector2(250,250))
 #		grid.material.set_shader_parameter("grid_size",floor(250.0/float(subdiv)))
 #		var lw = ceil(250.0/float(subdiv)) / 250.0
@@ -157,7 +161,7 @@ func cut_image():
 	Gsb.conB.emit(str("[",cutup.size(),"] sections"))
 	copy_module.columns = subdiv
 	var idx = 0
-	var wide = false if subdiv < 14 else true
+	var wide = false if subdiv < listThreshold else true
 	copy_module.visible = !wide
 	cmb_scroll_container.visible = wide
 	for i in cutup:
@@ -331,6 +335,7 @@ func hide_welcome():
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Welcome.hide()
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Basic.hide()
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples.hide()
+	Gsb.help_ui.emit("CLOSE")
 
 func _on_upload_pressed():
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Upload.release_focus()
@@ -363,8 +368,8 @@ func show_options():
 	$Control/HBoxContainer/Preview/ToggleOptions.show()
 	$Control2/PanelContainer/bar/Start/SaveSevo.show()
 	$Control2/PanelContainer/bar/Start/OpenHex.show()
-	if subdiv < 14: $Control/HBoxContainer/Preview/HBoxContainer/CopyModule.show()
-	else: $Control/HBoxContainer/Preview/HBoxContainer/CMBScrollContainer/CopyModuleB.show()
+	if subdiv < listThreshold: $Control/HBoxContainer/Preview/HBoxContainer/CopyModule.show()
+	else: $Control/HBoxContainer/Preview/HBoxContainer/CMBScrollContainer.show()
 
 func hide_some_options():
 	#$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions.hide()
@@ -375,7 +380,7 @@ func hide_some_options():
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Regen.hide()
 	$Control/HBoxContainer/Options/VBoxContainer/OptionsB/Upload.hide()
 	$Control/HBoxContainer/Preview/HBoxContainer/CopyModule.hide()
-	$Control/HBoxContainer/Preview/HBoxContainer/CMBScrollContainer/CopyModuleB.hide()
+	$Control/HBoxContainer/Preview/HBoxContainer/CMBScrollContainer.hide()
 	#$Control/HBoxContainer/Preview/ToggleOptions.hide()
 
 func set_image_info():
@@ -474,7 +479,7 @@ func show_nd():
 	#$Control2/namebp.show()
 
 func _on_save_sevo_pressed():
-	if subdiv <= 16:
+	if true:#subdiv <= 16:
 		show_nd()
 	else:
 		#warning
@@ -607,3 +612,13 @@ func set_customs(val):
 		custom_adjustments = "<align=center><line-height=16.75%><cspace=-0.11em>"
 	await get_tree().create_timer(0.5).timeout
 	if val == "CLOSE" and old_ad != custom_adjustments: generate()
+
+
+func _on_rotate_pressed():
+	if image:
+		var ri = image.get_image()
+		ri.rotate_90(COUNTERCLOCKWISE)
+		var im = ImageTexture.new()
+		var imr = im.create_from_image(ri)
+		uploaded_image.texture = imr
+		image = imr

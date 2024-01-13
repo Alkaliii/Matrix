@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bfr6scil1p0vt"]
+[gd_scene load_steps=30 format=3 uid="uid://bfr6scil1p0vt"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_jnf3j"]
 [ext_resource type="Texture2D" uid="uid://s6odp8qwiaup" path="res://Ram_Infobox.png" id="2_a48b2"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://ManageInput.gd" id="5_vqtll"]
 [ext_resource type="Texture2D" uid="uid://c6dsp43xjpn58" path="res://icons/3059-cautionwarning.png" id="6_g7j7u"]
 [ext_resource type="Texture2D" uid="uid://dyywdgbq2dcf8" path="res://icons/options/grid_3x3_FILL0_wght400_GRAD0_opsz48.svg" id="6_lditq"]
+[ext_resource type="Texture2D" uid="uid://flk48gkohhni" path="res://icons/rotate_90_degrees_ccw_FILL0_wght400_GRAD0_opsz48.svg" id="7_4pgnn"]
 [ext_resource type="Texture2D" uid="uid://c001epwx7e55o" path="res://icons/warning_FILL0_wght400_GRAD0_opsz48.svg" id="7_lgkxk"]
 [ext_resource type="Texture2D" uid="uid://1tb7ui1o771b" path="res://icons/warning_FILL0_wght400_GRAD0_opsz48b.svg" id="7_s74l8"]
 [ext_resource type="Texture2D" uid="uid://1dn5062clnlq" path="res://icons/options/content_cut_FILL0_wght400_GRAD0_opsz48.svg" id="8_sitfy"]
@@ -19,7 +20,9 @@
 [ext_resource type="Texture2D" uid="uid://bumkqd7x8nmp4" path="res://icons/options/help_FILL0_wght400_GRAD0_opsz48.svg" id="15_uwm2q"]
 [ext_resource type="PackedScene" uid="uid://dwjvhscca1eac" path="res://hex_edit.tscn" id="15_ykexn"]
 [ext_resource type="Texture2D" uid="uid://bda0f4aw5v4y3" path="res://icons/options/close_FILL0_wght400_GRAD0_opsz48.svg" id="16_6yju0"]
+[ext_resource type="PackedScene" uid="uid://wtsb0fxsyvht" path="res://knowledge_base.tscn" id="16_kea8j"]
 [ext_resource type="Texture2D" uid="uid://ytqrv8kcxdyd" path="res://icons/note_FILL0_wght400_GRAD0_opsz24.svg" id="16_lxddx"]
+[ext_resource type="Texture2D" uid="uid://y03wmn8ttx15" path="res://matrix_large.png" id="16_pstua"]
 [ext_resource type="Script" path="res://Close.gd" id="17_6kgbp"]
 [ext_resource type="Texture2D" uid="uid://7mqtebecwnbd" path="res://icons/minimize_FILL0_wght400_GRAD0_opsz24.svg" id="19_h7ioe"]
 [ext_resource type="PackedScene" uid="uid://xl6h5tb0nk78" path="res://closescreen.tscn" id="19_y6vj3"]
@@ -183,6 +186,24 @@ text = "Ram from Re:Zero."
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
+
+[node name="rotate" type="TextureButton" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -28.0
+offset_top = -28.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+texture_normal = ExtResource("7_4pgnn")
+ignore_texture_size = true
+stretch_mode = 0
 
 [node name="spacer" type="Control" parent="Control/HBoxContainer/Options/VBoxContainer/OptionsB"]
 custom_minimum_size = Vector2(0, 30)
@@ -424,6 +445,24 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.827451, 0.827451, 0.827451, 1)
 
+[node name="matrixIcon" type="TextureRect" parent="Control/HBoxContainer/Preview/PreviewBack"]
+self_modulate = Color(0.745098, 0.745098, 0.745098, 1)
+custom_minimum_size = Vector2(210, 210)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("16_pstua")
+expand_mode = 1
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/Preview"]
 layout_mode = 1
 anchors_preset = 8
@@ -566,6 +605,9 @@ offset_left = -1280.0
 offset_top = -360.0
 offset_right = -854.0
 offset_bottom = 360.0
+
+[node name="KnowledgeBase" parent="Control" instance=ExtResource("16_kea8j")]
+layout_mode = 1
 
 [node name="Control2" type="Control" parent="."]
 custom_minimum_size = Vector2(1280, 30)
@@ -797,6 +839,7 @@ size_flags_horizontal = 3
 
 [node name="close_screen" parent="." instance=ExtResource("19_y6vj3")]
 
+[connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/UploadedImage/rotate" to="." method="_on_rotate_pressed"]
 [connection signal="value_changed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Subdivisions/HBoxContainer/in_Subdiv" to="Control/ManageInput" method="_on_in_subdiv_value_changed"]
 [connection signal="text_submitted" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size/HBoxContainer3/in_size_x" to="Control/ManageInput" method="_on_in_size_x_text_submitted"]
 [connection signal="text_submitted" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Size/HBoxContainer3/in_size_y" to="Control/ManageInput" method="_on_in_size_y_text_submitted"]

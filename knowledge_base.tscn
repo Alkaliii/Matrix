@@ -1,0 +1,398 @@
+[gd_scene load_steps=5 format=3 uid="uid://wtsb0fxsyvht"]
+
+[ext_resource type="Script" path="res://knowledge_base.gd" id="1_3fob7"]
+[ext_resource type="FontFile" uid="uid://bydssj3oqdgqp" path="res://VCR_OSD_MONO_1.001.ttf" id="1_ka78v"]
+[ext_resource type="FontFile" uid="uid://csyjnpwhaob4v" path="res://upheavtt.ttf" id="2_n3rx8"]
+[ext_resource type="Texture2D" uid="uid://bjmsvk8raxbgf" path="res://Splash2.png" id="4_s4hui"]
+
+[node name="KnowledgeBase" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_3fob7")
+
+[node name="kbb" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(852, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0.827451, 0.827451, 0.827451, 0.941176)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="kbb"]
+custom_minimum_size = Vector2(0, 600)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="kbt" type="RichTextLabel" parent="kbb/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.396078, 0.396078, 0.396078, 1)
+theme_override_fonts/normal_font = ExtResource("2_n3rx8")
+bbcode_enabled = true
+text = "[wave]Knowledge Base"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="GridContainer" type="GridContainer" parent="kbb/VBoxContainer"]
+layout_mode = 2
+columns = 6
+
+[node name="Intro" type="Button" parent="kbb/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_ka78v")
+theme_override_font_sizes/font_size = 12
+text = "Introduction"
+
+[node name="How2" type="Button" parent="kbb/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_ka78v")
+theme_override_font_sizes/font_size = 12
+text = "How to Matrix"
+
+[node name="Export" type="Button" parent="kbb/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_ka78v")
+theme_override_font_sizes/font_size = 12
+text = "Exporting"
+
+[node name="Reference" type="Button" parent="kbb/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_ka78v")
+theme_override_font_sizes/font_size = 12
+text = "Reference Guide"
+
+[node name="Credits" type="Button" parent="kbb/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_ka78v")
+theme_override_font_sizes/font_size = 12
+text = "Credits"
+
+[node name="Close" type="Button" parent="kbb/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_ka78v")
+theme_override_font_sizes/font_size = 12
+text = "Close"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="kbb/VBoxContainer"]
+custom_minimum_size = Vector2(600, 300)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="kbb/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Intro" type="VBoxContainer" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="spacer" type="Control" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/Intro"]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+
+[node name="Heading" type="RichTextLabel" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/Intro"]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_ka78v")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "Introduction"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Paragraph" type="RichTextLabel" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/Intro"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_constants/line_separation = 2
+theme_override_fonts/normal_font = ExtResource("1_ka78v")
+theme_override_fonts/bold_font = ExtResource("2_n3rx8")
+bbcode_enabled = true
+text = "Welcome to Matrix. If this is your first time using the software, reading this is a good choice. First things first. What is a [b]fancy screen[/b]?
+
+
+[b]Fancy Screen[/b] is the terminology used to refer to screen blocks with style. Matrix is a program that can generate fancy screens from images, although it is quite different from the traditional style some folks utilize. Now that you know what Matrix does lets move on to how to use it. >>>"
+fit_content = true
+scroll_active = false
+
+[node name="H2M" type="VBoxContainer" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/H2M"]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="h2mheading" type="RichTextLabel" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/H2M"]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_ka78v")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "How to Matrix"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="h2mPara" type="RichTextLabel" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/H2M"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_constants/line_separation = 2
+theme_override_fonts/normal_font = ExtResource("1_ka78v")
+theme_override_fonts/bold_font = ExtResource("2_n3rx8")
+bbcode_enabled = true
+text = "[b]Step 1. Upload an Image[/b]
+You can upload one from your PC or click an example to play around with. PNGs are recommended. WEBP can die.
+
+[b]STEP 2. TELL MATRIX WHAT TO DO[/b]
+After you prepare an image you will be presented with options, Use these options to tweak how Matrix will generate your screen code.
+
+If you need a reference on what does what you can click the \"reference guide\" button.
+
+[b]Step 3. Generate, Regenerate[/b]
+Click \"Generate\" or \"Regenerate\" after you change options in Matrix to get updated screen code. Use the preview to gauge how it will look in game.
+
+[b]Step 3. Preview your masterpiece[/b]
+After you generate new screen code, you can use the buttons to the left or right of the preview window to skim through all the generated sections. This is also how you obtain the screen code. Each time you press a preview button it will be copied to your clipboard. (rip clipboard history)
+
+[b]Step 4. Putting it all together[/b]
+Once everything is perfect, open up [wave]Starship Evo[/wave] and place down a screen brick at it's default size. Do not stretch it unless you know what you're doing. Press [F] to open it up. Make sure you have Matrix still open also!
+	- Change the font size to 7.2
+	- Copy the screen code you want to put in the screen
+	- Click the textbox and then press [CTRL] + [V]
+		- (Be paitent, your game will hang up a bit)
+	- Voila!
+
+--
+But what do you do if you have a lot of sections? (like 4 or more) That is when you press the export button. You can learn more about it in the next part >>>"
+fit_content = true
+scroll_active = false
+
+[node name="Export" type="VBoxContainer" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/Export"]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="eheading" type="RichTextLabel" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/Export"]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_ka78v")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "Exporting"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="epara" type="RichTextLabel" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/Export"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+focus_mode = 2
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_constants/line_separation = 2
+theme_override_fonts/normal_font = ExtResource("1_ka78v")
+theme_override_fonts/bold_font = ExtResource("2_n3rx8")
+bbcode_enabled = true
+text = "If you set your subdivisions a little to high and ended up with way too many sections then you have paitence to set one by one, let me introduce you to the most convient feature in Matrix! In the top left corner beside the program tag is the [rainbow]EXPORT[/rainbow] button!
+
+Press it to turn all of the screen code sitting in Matrix into a [b].sevo[/b] file and save it to your blueprint directory to open in game all set up! If you don't know where that is you can usually find it here:
+
+%UserProfile%\\AppData\\LocalLow\\Moonfire Entertainment\\Starship EVO\\Save_Data\\Blueprints
+
+Beware! Just because Matrix will do the work for you doesn't mean you should set your subdivisions through the roof. It is very possible to crash your game with a modified blueprint, at worst the world data could get messed up also. Do you really need an anime girl in 4K? I suggest you fly carefully Icarus."
+fit_content = true
+scroll_active = false
+selection_enabled = true
+
+[node name="Reference" type="VBoxContainer" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/Reference"]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="rheading" type="RichTextLabel" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/Reference"]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_ka78v")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "Reference Guide"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="rpara" type="RichTextLabel" parent="kbb/VBoxContainer/ScrollContainer/VBoxContainer/Reference"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_constants/line_separation = 2
+theme_override_fonts/normal_font = ExtResource("1_ka78v")
+theme_override_fonts/bold_font = ExtResource("2_n3rx8")
+bbcode_enabled = true
+text = "Here is a list with info on everything you can press in Matrix.
+
+[b]Toolbar[/b]
+1. Click the word MATRIX to reset the program.
+2. Click the button beside it to open the Txt Editor.
+3. Click the button beside that to Export the current data in Matrix.
+
+[font_size=20]Txt Editor[/font_size]
+This feature lets you look at screen code within Matrix. Helpful if you don't want to open a notepad to fix some stuff. Some additional options are also avalible here that will be explained later.
+
+--
+[font_size=20]Export[/font_size]
+This feature will create a [b].sevo[/b] file where you specifiy it to. Give it a good name!
+--
+
+[b]Toolbar Continued[/b]
+1. Click the [-] to minimize Matrix.
+2. Click the [(i)] to recover the native window border and open or close this help section.
+3. Click the [X] to terminate Matrix.
+--
+
+[b]Generation Options[/b]
+These are the options on the left side of the screen when an image has been prepared and the Txt Editor is closed.
+
+1. [color=ff1493]Subdivisions[/color]
+	This option controls how many times and image is cut up by Matrix. If you set it to 2, your image will be cut into 4 sections. A section represents one screen block. 
+
+Use this in tandam with 'size' to maintain resolution if thats critical to what you're doing.
+--
+
+2. [color=ff1493]Alpha Threshold[/color]
+	This option matters when 'with transparency' isn't on. To save on character count, Matrix will cull semi transparent pixels instead of converting them accurately. This option controls what stays and what doesn't.
+
+I suggest leaving it alone.
+--
+
+3. [color=ff1493]Interpolation[/color]
+	This option controls how Matrix will downscale or upscale the image you gave it. Wikipedia has more on the subject if you're really interested. Otherwise just use the preview window to decide which feels best.
+--
+
+4. [color=ff1493]Vertical Offset[/color]
+	If you set this option to something other than 0, Matrix will add some code to the start of a section to offset it in vertical space. At 48x48, Font Size 7.2 setting this to -217 will center the section on a 1x1 screen block. Be aware the Matrix flips this value, so -217 is actually just 217 in the voffset tag.
+--
+
+5. [color=ff1493]Size[/color]
+	This option controls how many 'dots' are in one section aka the resolution of a section. I suggest keeping it as is unless you have a plan to get around some of the limitations in game.
+--
+
+6. [color=ff1493]Generate[/color]
+	Click this button to get matrix to generate screen code. You have to click it each time you make a change to an option for it to take affect.
+--
+
+This button is sometimes label \"Regenerate\".
+
+7. [color=ff1493]Upload Image[/color]
+	Click this button to open a file dialogue an provide Matrix with a new image to work on.
+
+--
+[b]Generation Options Continued[/b]
+These are the options that appear along the bottom of the program window when help isn't open and an image has been prepared.
+
+1. [color=ff1493]Optimize[/color]
+	When set, this option will tell Matrix to generate optimized screen code. This can reduce character count in some cases.
+
+2. [color=ff1493]Better Colors[/color]
+	When set, this option will tell Matrix to use full hex codes when generating screen code. 'Optimize' should be on before you use this since it will increase character count.
+
+3. [color=ff1493]With Transparency[/color]
+	When set, this option will tell Matrix to not cull semi transparent pixels, and instead convert them faithfully.
+
+--
+[b]Copy Module[/b]
+Beside the Preview grid will be buttons. Depending on how many sections have been generated they will appear in a grid or a list. If you press them they will preview the section they refer to on the grid and copy the section's screen code to your clipboard. When you click 'regenerate' or 'generate' please wait for all the buttons to appear before exporting.
+
+--
+[b]Txt Editor Custom Adjustments[/b]
+In the Txt Editor are options to set custom adjustments. Check the box to view the options.
+
+1. [color=ff1493]___[/color]
+	Type in the text box to change what is placed before the main screen code. This can be different tags to help adjust the screen code position or something else you deem important for every screen to have.
+
+2. [color=ff1493]Export Font[/color]
+	This only applies for export. Set the font you want export to use when creating screens.
+
+3. [color=ff1493]Export Font Size[/color]
+	This only applies for export. Set the font size you want export to use when creating screens.
+
+--
+[b]Help Section[/b]
+Press the buttons here to view the many things I spent way to long typing."
+fit_content = true
+scroll_active = false
+
+[node name="Splash2" type="TextureRect" parent="kbb"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -364.0
+offset_top = -200.0
+offset_right = 364.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(364, 200)
+mouse_filter = 2
+texture = ExtResource("4_s4hui")
+
+[node name="ProgressBar" type="ProgressBar" parent="kbb/Splash2"]
+custom_minimum_size = Vector2(728, 12)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 4.0
+grow_horizontal = 2
+show_percentage = false
+
+[connection signal="pressed" from="kbb/VBoxContainer/GridContainer/Intro" to="." method="_on_intro_pressed"]
+[connection signal="pressed" from="kbb/VBoxContainer/GridContainer/How2" to="." method="_on_how_2_pressed"]
+[connection signal="pressed" from="kbb/VBoxContainer/GridContainer/Export" to="." method="_on_export_pressed"]
+[connection signal="pressed" from="kbb/VBoxContainer/GridContainer/Reference" to="." method="_on_reference_pressed"]
+[connection signal="pressed" from="kbb/VBoxContainer/GridContainer/Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="kbb/VBoxContainer/GridContainer/Close" to="." method="_on_close_pressed"]
