@@ -11,6 +11,10 @@ public partial class Parse_sevo : Node
 {
 	public byte[] byte_matrix;
 
+	//Injection Interface
+	public Godot.Collections.Array injection_spread;
+	public string mod_blueprint_name;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -170,6 +174,53 @@ public partial class Parse_sevo : Node
 		byte_matrix = MessagePackSerializer.Serialize<Sevo.BrickEntityMp>(NEW,lz4Options);
 	}
 
+	public void ReadMP4Injection(string path) {
+		Sevo.BrickEntityMp mp = MessagePackSerializer.Deserialize<Sevo.BrickEntityMp>(Godot.FileAccess.GetFileAsBytes(path),lz4Options);
+		injection_spread = new Godot.Collections.Array();
+		mod_blueprint_name = mp.EntityName;
+
+		foreach (Sevo.NewCommand_mp ncm in mp.Commands) {
+			if (mp.BrickDatas.Datas[ncm.childrenBrickId.brickId].brickId != 131) {
+				continue;
+			}
+
+			var command_dat = new Godot.Collections.Dictionary();
+			var itd = MessagePackSerializer.Deserialize<InputTextData>(ncm.customData);
+
+			command_dat.Add("screen_content",itd.text);
+			command_dat.Add("screen_font",itd.font);
+			command_dat.Add("screen_font_size",itd.fontSize);
+			command_dat.Add("screen_wrap",itd.isWrapped);
+			injection_spread.Add(command_dat);
+		}
+		GD.Print("Finished Reading");
+	}
+
+	public void WriteMPFromInjection(string path, string mName) {
+		Sevo.BrickEntityMp mp = MessagePackSerializer.Deserialize<Sevo.BrickEntityMp>(Godot.FileAccess.GetFileAsBytes(path),lz4Options);
+		mp.EntityName = mName;
+		var i = 0;
+		foreach (Sevo.NewCommand_mp ncm in mp.Commands) {
+			if (mp.BrickDatas.Datas[ncm.childrenBrickId.brickId].brickId != 131) {
+				continue;
+			}
+			
+			InputTextData screendata = new InputTextData();
+			Godot.Collections.Dictionary nd = (Godot.Collections.Dictionary)injection_spread.ElementAt(i);
+			
+			screendata.text = (string)nd["screen_content"];
+			screendata.font = (int)nd["screen_font"];
+			screendata.fontSize = (float)nd["screen_font_size"];
+			screendata.isWrapped = (bool)nd["screen_wrap"];
+			
+			byte[] cds = MessagePackSerializer.Serialize<InputTextData>(screendata, (MessagePackSerializerOptions) null, new CancellationToken());
+			ncm.customData = cds;
+			i++;
+		}
+		byte_matrix = MessagePackSerializer.Serialize<Sevo.BrickEntityMp>(mp,lz4Options);
+		GD.Print("Finished Injection");
+	}
+
 	public void ReadMP(string path) {
 		Sevo.BrickEntityMp mp = MessagePackSerializer.Deserialize<Sevo.BrickEntityMp>(Godot.FileAccess.GetFileAsBytes(path),lz4Options);
 		//GD.Print(mp.Commands.First().childrenBrickId.brickId);
@@ -181,8 +232,8 @@ public partial class Parse_sevo : Node
 		//GD.Print(itd.text);
 		var i = 0;
 		foreach (Sevo.BrickInstanceData bds in mp.BrickDatas.Datas) {
-			GD.Print(bds.instanceId);
-			GD.Print(mp.Commands[i].childrenBrickId.brickId);
+			GD.Print(bds.brickId);
+			//GD.Print(mp.Commands[i].childrenBrickId.brickId);
 			i++;
 		}
 		//foreach (Sevo.NewCommand_mp nc in mp.Commands) {

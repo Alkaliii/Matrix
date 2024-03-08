@@ -173,3 +173,10 @@ func _on_open_hex_pressed():
 		false:
 			Gsb.hex_ui.emit("OPEN")
 	Gsb.hex = !Gsb.hex
+
+const ADVANCED_INJECTION_WINDOW = preload("res://advanced_injection_window.tscn")
+func _on_open_inject_pressed():
+	var aiw = ADVANCED_INJECTION_WINDOW.instantiate()
+	add_child(aiw)
+	aiw.move_to_center()
+	return

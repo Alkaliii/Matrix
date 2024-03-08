@@ -115,7 +115,8 @@ scroll_active = false
 [node name="ca_select" type="CheckBox" parent="PreviewBack/Control/VBoxContainer/ca_ask"]
 layout_mode = 2
 
-[node name="Adjustments" type="LineEdit" parent="PreviewBack/Control/VBoxContainer"]
+[node name="Adjustments" type="TextEdit" parent="PreviewBack/Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 placeholder_text = "<align=center><line-height=16.75%><cspace=-0.11em>"
 

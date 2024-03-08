@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bfr6scil1p0vt"]
+[gd_scene load_steps=31 format=3 uid="uid://bfr6scil1p0vt"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_jnf3j"]
 [ext_resource type="Texture2D" uid="uid://s6odp8qwiaup" path="res://Ram_Infobox.png" id="2_a48b2"]
@@ -26,6 +26,7 @@
 [ext_resource type="Script" path="res://Close.gd" id="17_6kgbp"]
 [ext_resource type="Texture2D" uid="uid://7mqtebecwnbd" path="res://icons/minimize_FILL0_wght400_GRAD0_opsz24.svg" id="19_h7ioe"]
 [ext_resource type="PackedScene" uid="uid://xl6h5tb0nk78" path="res://closescreen.tscn" id="19_y6vj3"]
+[ext_resource type="Texture2D" uid="uid://dcmreb4bjo5wo" path="res://icons/options/edit_square_FILL0_wght400_GRAD0_opsz48.svg" id="20_ex3sg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fa8ha"]
 content_margin_left = 6.0
@@ -505,6 +506,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="HidePreviewGrid" type="TextureButton" parent="Control/HBoxContainer/Preview/HBoxContainer"]
+modulate = Color(0.396078, 0.396078, 0.396078, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 8
+texture_normal = ExtResource("6_lditq")
+ignore_texture_size = true
+stretch_mode = 5
+
 [node name="ToggleOptions" type="HBoxContainer" parent="Control/HBoxContainer/Preview"]
 layout_mode = 1
 anchors_preset = 7
@@ -661,6 +671,15 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_vertical = 4
 texture_normal = ExtResource("15_b24lw")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="OpenInject" type="TextureButton" parent="Control2/PanelContainer/bar/Start"]
+modulate = Color(0.396078, 0.396078, 0.396078, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("20_ex3sg")
 ignore_texture_size = true
 stretch_mode = 5
 
@@ -849,11 +868,13 @@ size_flags_horizontal = 3
 [connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/ea" to="." method="_on_ea_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/eb" to="." method="_on_eb_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Options/VBoxContainer/OptionsB/Examples/ec" to="." method="_on_ec_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/Preview/HBoxContainer/HidePreviewGrid" to="." method="_on_hide_preview_grid_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Optimize/HBoxContainer6/in_optimize" to="Control/ManageInput" method="_on_in_optimize_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Colors/HBoxContainer7/in_color" to="Control/ManageInput" method="_on_in_color_pressed"]
 [connection signal="pressed" from="Control/HBoxContainer/Preview/ToggleOptions/Transparency/HBoxContainer8/in_transparency" to="Control/ManageInput" method="_on_in_transparency_pressed"]
 [connection signal="pressed" from="Control2/PanelContainer/bar/Start/Home" to="." method="_on_home_pressed"]
 [connection signal="pressed" from="Control2/PanelContainer/bar/Start/OpenHex" to="Control/ManageInput" method="_on_open_hex_pressed"]
+[connection signal="pressed" from="Control2/PanelContainer/bar/Start/OpenInject" to="Control/ManageInput" method="_on_open_inject_pressed"]
 [connection signal="pressed" from="Control2/PanelContainer/bar/Start/SaveSevo" to="." method="_on_save_sevo_pressed"]
 [connection signal="pressed" from="Control2/PanelContainer/bar/End/Minimize" to="Control/ManageInput" method="_on_minimize_pressed"]
 [connection signal="pressed" from="Control2/PanelContainer/bar/End/Info" to="Control/ManageInput" method="_on_info_pressed"]

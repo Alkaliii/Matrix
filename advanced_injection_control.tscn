@@ -1,0 +1,288 @@
+[gd_scene load_steps=10 format=3 uid="uid://dsv5ed6s4km1b"]
+
+[ext_resource type="FontFile" uid="uid://bydssj3oqdgqp" path="res://VCR_OSD_MONO_1.001.ttf" id="1_s8ybo"]
+[ext_resource type="Script" path="res://advanced_injection_control.gd" id="2_3bxgv"]
+[ext_resource type="Texture2D" uid="uid://y03wmn8ttx15" path="res://matrix_large.png" id="2_lqbxa"]
+[ext_resource type="Texture2D" uid="uid://dlhaakp6bcagh" path="res://icons/options/folder_open_FILL0_wght400_GRAD0_opsz48.svg" id="3_0qv2u"]
+[ext_resource type="FontFile" uid="uid://csyjnpwhaob4v" path="res://upheavtt.ttf" id="4_x7dfl"]
+[ext_resource type="Texture2D" uid="uid://dq83x2bxsksmy" path="res://icons/activity_zone_FILL0_wght400_GRAD0_opsz24.svg" id="5_cjp4y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fa8ha"]
+content_margin_left = 6.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Theme" id="Theme_bkl34"]
+default_font = ExtResource("1_s8ybo")
+default_font_size = 12
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_fa8ha")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pogfh"]
+content_margin_left = 10.0
+content_margin_right = 5.0
+bg_color = Color(0.145098, 0.145098, 0.145098, 1)
+
+[node name="AdvancedInjectionControl" type="Control"]
+custom_minimum_size = Vector2(400, 720)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 400.0
+offset_bottom = 720.0
+theme = SubResource("Theme_bkl34")
+script = ExtResource("2_3bxgv")
+
+[node name="Back" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(400, 720)
+layout_mode = 1
+color = Color(0.827451, 0.827451, 0.827451, 1)
+
+[node name="matrixIcon" type="TextureRect" parent="Back"]
+self_modulate = Color(0.745098, 0.745098, 0.745098, 1)
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = 274.0
+offset_right = 30.0
+offset_bottom = 334.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_lqbxa")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PanelContainer" type="PanelContainer" parent="Back"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 20.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pogfh")
+
+[node name="bar" type="HBoxContainer" parent="Back/PanelContainer"]
+layout_mode = 2
+
+[node name="End" type="HBoxContainer" parent="Back/PanelContainer/bar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OpenSevo" type="TextureButton" parent="Back/PanelContainer/bar/End"]
+modulate = Color(0.396078, 0.396078, 0.396078, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("3_0qv2u")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Middle" type="HBoxContainer" parent="Back/PanelContainer/bar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Start" type="HBoxContainer" parent="Back/PanelContainer/bar"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Notifcation_Center" type="RichTextLabel" parent="Back/PanelContainer/bar/Start"]
+unique_name_in_owner = true
+clip_contents = false
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/normal_font = ExtResource("1_s8ybo")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "[color=656565]Notification"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="spacer" type="Control" parent="Back/PanelContainer/bar/Start"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Back"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Back/MarginContainer"]
+layout_mode = 2
+
+[node name="top_spacer" type="Control" parent="Back/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="ait" type="RichTextLabel" parent="Back/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.396078, 0.396078, 0.396078, 1)
+theme_override_fonts/normal_font = ExtResource("4_x7dfl")
+bbcode_enabled = true
+text = "[shake]Advanced Injection"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="SelectionStatus" type="HBoxContainer" parent="Back/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="icn" type="TextureRect" parent="Back/MarginContainer/VBoxContainer/SelectionStatus"]
+modulate = Color(0.333333, 0.333333, 0.333333, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 8
+texture = ExtResource("5_cjp4y")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="selected_screen" type="RichTextLabel" parent="Back/MarginContainer/VBoxContainer/SelectionStatus"]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_s8ybo")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "0/0"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="top_spacer2" type="Control" parent="Back/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="c_screen_font" type="HBoxContainer" parent="Back/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ca_tip" type="RichTextLabel" parent="Back/MarginContainer/VBoxContainer/c_screen_font"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_s8ybo")
+theme_override_fonts/bold_font = ExtResource("4_x7dfl")
+bbcode_enabled = true
+text = "font:"
+fit_content = true
+scroll_active = false
+
+[node name="font_select" type="OptionButton" parent="Back/MarginContainer/VBoxContainer/c_screen_font"]
+layout_mode = 2
+item_count = 2
+selected = 0
+popup/item_0/text = "Microgamma"
+popup/item_0/id = 0
+popup/item_1/text = "Inter"
+popup/item_1/id = 1
+
+[node name="c_font_size" type="HBoxContainer" parent="Back/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ca_tip" type="RichTextLabel" parent="Back/MarginContainer/VBoxContainer/c_font_size"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.207843, 0.207843, 0.207843, 1)
+theme_override_fonts/normal_font = ExtResource("1_s8ybo")
+theme_override_fonts/bold_font = ExtResource("4_x7dfl")
+bbcode_enabled = true
+text = "font size:"
+fit_content = true
+scroll_active = false
+
+[node name="size_select" type="SpinBox" parent="Back/MarginContainer/VBoxContainer/c_font_size"]
+layout_mode = 2
+max_value = 999.0
+step = 0.001
+value = 7.2
+
+[node name="CodeEdit" type="CodeEdit" parent="Back/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_s8ybo")
+placeholder_text = "Welcome, please load a blueprint to get started.
+
+I suggest putting identifiers in the screens
+you want to inject into, since their order
+here may surprise you.
+
+I also suggest saving the modified blueprint
+under a new name incase any issues arise."
+caret_type = 1
+caret_blink = true
+
+[node name="sel_buttons" type="HBoxContainer" parent="Back/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Prev" type="Button" parent="Back/MarginContainer/VBoxContainer/sel_buttons"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_s8ybo")
+theme_override_font_sizes/font_size = 12
+text = "<<< previous"
+
+[node name="Next" type="Button" parent="Back/MarginContainer/VBoxContainer/sel_buttons"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_s8ybo")
+theme_override_font_sizes/font_size = 12
+text = "next >>>"
+
+[node name="Inject_file" type="Button" parent="Back/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 19)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_s8ybo")
+theme_override_font_sizes/font_size = 12
+text = "inject file"
+icon = ExtResource("3_0qv2u")
+alignment = 0
+expand_icon = true
+
+[node name="top_spacer3" type="Control" parent="Back/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="bpname" type="LineEdit" parent="Back/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "BlueprintName"
+
+[node name="Saveas" type="Button" parent="Back/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_s8ybo")
+theme_override_font_sizes/font_size = 12
+text = "save as"
+
+[connection signal="pressed" from="Back/PanelContainer/bar/End/OpenSevo" to="." method="_on_open_sevo_pressed"]
+[connection signal="pressed" from="Back/MarginContainer/VBoxContainer/sel_buttons/Prev" to="." method="_on_prev_pressed"]
+[connection signal="pressed" from="Back/MarginContainer/VBoxContainer/sel_buttons/Next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Back/MarginContainer/VBoxContainer/Inject_file" to="." method="_on_inject_file_pressed"]
+[connection signal="pressed" from="Back/MarginContainer/VBoxContainer/Saveas" to="." method="_on_saveas_pressed"]

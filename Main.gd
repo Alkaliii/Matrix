@@ -342,6 +342,8 @@ func _on_upload_pressed():
 	hide_welcome()
 	
 	var fd = FileDialog.new()
+	fd.theme = $Control.theme
+	#if Gsb.dir_mem != null: fd.current_path = Gsb.dir_mem
 	fd.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	fd.access = FileDialog.ACCESS_FILESYSTEM
 	#fd.filters.append_array(PackedStringArray(["*.png","*.jpg","*.jpeg","*.svg","*.webp"]))
@@ -509,6 +511,8 @@ func _on_confirm_pressed():
 	Gsb.notify.emit(Gsb.n.ALL_GOOD) 
 	
 	var fd = FileDialog.new()
+	fd.theme = $Control.theme
+	#if Gsb.dir_mem != null: fd.current_dir = Gsb.dir_mem
 	fd.file_mode = FileDialog.FILE_MODE_OPEN_DIR
 	fd.access = FileDialog.ACCESS_FILESYSTEM
 	fd.ok_button_text = "Select Folder"
@@ -622,3 +626,17 @@ func _on_rotate_pressed():
 		var imr = im.create_from_image(ri)
 		uploaded_image.texture = imr
 		image = imr
+
+var spacing := 0
+var hide_space := false
+func _on_hide_preview_grid_pressed():
+	hide_space = !hide_space
+	match hide_space:
+		true:
+			preview_grid.set("theme_override_constants/h_separation",0)
+			preview_grid.set("theme_override_constants/v_separation",0)
+			$Control/ManageInput.set_consoleA("Preview Grid Disabled")
+		false:
+			preview_grid.set("theme_override_constants/h_separation",1)
+			preview_grid.set("theme_override_constants/v_separation",1)
+			$Control/ManageInput.set_consoleA("Preview Grid Enabled")

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqt25276cxgp3"]
+
+[ext_resource type="PackedScene" uid="uid://dsv5ed6s4km1b" path="res://advanced_injection_control.tscn" id="1_22r7j"]
+
+[node name="AdvancedInjection" type="Window"]
+handle_input_locally = false
+title = "Injection"
+size = Vector2i(400, 720)
+unresizable = true
+
+[node name="AdvancedInjectionControl" parent="." instance=ExtResource("1_22r7j")]

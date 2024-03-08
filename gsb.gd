@@ -16,6 +16,8 @@ var hex := false
 
 var kill_old_cut = false
 
+var dir_mem : String
+
 enum n {
 	ALL_GOOD,
 	OVERFLOW,
@@ -79,3 +81,9 @@ const delete_screen := "<line-height=217>
 ................................................
 ................................................
 ................................................"
+
+
+func savedir(path : String):
+	var stripto = path.rfind("/")
+	dir_mem = path.substr(0,stripto)
+	print("path saved:", dir_mem)
