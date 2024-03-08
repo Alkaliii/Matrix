@@ -26,3 +26,6 @@ Matrix Downscales, Cuts, and converts each pixel of a file into a color code pre
 An example of Matrix Magic using Ram from Re:Zero.
 ![image](https://github.com/Alkaliii/Matrix/assets/53021785/fd300b43-7e3d-41f0-b4c0-5708b335868c)
 
+--
+
+As mentioned earlier Matrix was built off of the efforts of **NuclearLemons** (creator of [EvoEdit](https://github.com/pinesh/EvoEdit), which is the godfather of modifying .sevo) and **Yokida** (inventor of the "dot matrix" fancy screen technique). Thanks to their help Matrix can help you! If you're interested in how matrix works I wrote up a quick rundown of what my bad code is supposed to be doing which you can find [here](https://docs.google.com/document/d/e/2PACX-1vRhTWD47ojWmkqyjzRJjfVR-Or18a3HsrNwrm-kmnN_I9L3AuSbAId843ZW-Bua4ganvci-ftZeLt4t/pub)
